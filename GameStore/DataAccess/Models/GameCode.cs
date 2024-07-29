@@ -17,6 +17,7 @@ namespace DataAccess.Models
         public Game Game { get; set; }
 
         [Required, MaxLength(14)]
+        [RegularExpression(@"^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$", ErrorMessage = "The code must be in the format XXXX-XXXX-XXXX with capital letters and numbers.")]
         public string Code { get; set; }
 
         public bool IsRedeemed { get; set; } = false;

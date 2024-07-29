@@ -1,0 +1,30 @@
+[
+  {
+    "GameId": 1,
+    "GenreId": 1
+  },
+  {
+    "GameId": 2,
+    "GenreId": 1
+  },
+  {
+    "GameId": 3,
+    "GenreId": 1
+  },
+  {
+    "GameId": 4,
+    "GenreId": 1
+  },
+  {
+    "GameId": 4,
+    "GenreId": 2
+  },
+  {
+    "GameId": 5,
+    "GenreId": 1
+  },
+  {
+    "GameId": 5,
+    "GenreId": 3
+  }
+]

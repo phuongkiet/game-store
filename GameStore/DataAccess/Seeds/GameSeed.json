@@ -1,0 +1,37 @@
+[
+  {
+    "Title": "Dark Soul 1",
+    "Description": "Dark Soul 1, hun hua",
+    "Price": 69.99,
+    "Stock": 5,
+    "CreatedAt": "2016-02-16T05:56:52"
+  },
+  {
+    "Title": "Dark Soul 2",
+    "Description": "Dark Soul 2, khu phua",
+    "Price": 69.99,
+    "Stock": 5,
+    "CreatedAt": "2016-02-16T05:56:52"
+  },
+  {
+    "Title": "Dark Soul 3",
+    "Description": "Dark Soul 3, khung dua",
+    "Price": 69.99,
+    "Stock": 5,
+    "CreatedAt": "2016-02-16T05:56:52"
+  },
+  {
+    "Title": "Elden Ring",
+    "Description": "Elden Ring, bon lu",
+    "Price": 69.99,
+    "Stock": 5,
+    "CreatedAt": "2016-02-16T05:56:52"
+  },
+  {
+    "Title": "Sekiro: Shadows Die Twice",
+    "Description": "Sekiro: Shadows Die Twice, khuong trua",
+    "Price": 69.99,
+    "Stock": 5,
+    "CreatedAt": "2016-02-16T05:56:52"
+  }
+]

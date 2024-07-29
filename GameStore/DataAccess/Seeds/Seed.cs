@@ -65,5 +65,71 @@ namespace DataAccess.Seeds
             await userManager.CreateAsync(manager, "Pa$$w0rd");
             await userManager.AddToRolesAsync(manager, new[] { "Manager" });
         }
+
+        public static async Task SeedGenre(GameStoreDbContext _context)
+        {
+            if(await _context.Genres.AnyAsync()) { return; }
+
+            var list = new List<Genre>
+            {
+                new Genre {GenreName="Action"},
+                new Genre {GenreName="RPG"},
+                new Genre {GenreName="Adventure"},
+                new Genre {GenreName="Visual Novel"},
+                new Genre {GenreName="Simulation"},
+                new Genre {GenreName="Horror"},
+                new Genre {GenreName="Indie"},
+                new Genre {GenreName="Strategy"}
+            };
+
+            foreach (var i in list)
+            {
+                await _context.Genres.AddAsync(i);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public static async Task SeedGame(GameStoreDbContext _context)
+        {
+            if (await _context.Games.AnyAsync()) { return; }
+
+            var game = await File.ReadAllTextAsync("../DataAccess/Seeds/GameSeed.json");
+            var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var m = JsonSerializer.Deserialize<List<Game>>(game, jsonOptions);
+
+            foreach (var i in m)
+            {
+                await _context.Games.AddAsync(i);
+                await _context.SaveChangesAsync();
+            }
+        }
+        public static async Task SeedGameGenre(GameStoreDbContext _context)
+        {
+            if (await _context.GameGenres.AnyAsync()) { return; }
+
+            var gameGenre = await File.ReadAllTextAsync("../DataAccess/Seeds/GameGenreSeed.json");
+            var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var m = JsonSerializer.Deserialize<List<GameGenre>>(gameGenre, jsonOptions);
+
+            foreach (var i in m)
+            {
+                await _context.GameGenres.AddAsync(i);
+                await _context.SaveChangesAsync();
+            }
+        }
+        public static async Task SeedGameCode(GameStoreDbContext _context)
+        {
+            if (await _context.GameCodes.AnyAsync()) { return; }
+
+            var gameCode = await File.ReadAllTextAsync("../DataAccess/Seeds/GameCodeSeed.json");
+            var jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var m = JsonSerializer.Deserialize<List<GameCode>>(gameCode, jsonOptions);
+
+            foreach (var i in m)
+            {
+                await _context.GameCodes.AddAsync(i);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
