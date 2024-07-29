@@ -120,6 +120,10 @@ try
     /*    await context.Database.ExecuteSqlRawAsync("DELETE FROM Connections");
     */
     await Seed.SeedUser(userManager, roleManager);
+    await Seed.SeedGenre(context);
+    await Seed.SeedGame(context);
+    await Seed.SeedGameGenre(context);
+    await Seed.SeedGameCode(context);
 }
 catch (Exception ex)
 {
