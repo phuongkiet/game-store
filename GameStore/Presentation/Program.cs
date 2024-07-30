@@ -1,4 +1,5 @@
 using DataAccess;
+using DataAccess.DAO;
 using DataAccess.Models;
 using DataAccess.Seeds;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,6 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Repository;
+using Repository.IRepository;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -85,7 +88,6 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddIdentityCore<User>(opt =>
 {
     opt.Password.RequiredLength = 5;
-
     opt.User.RequireUniqueEmail = true;
 })
     .AddRoles<Role>()
@@ -93,6 +95,9 @@ builder.Services.AddIdentityCore<User>(opt =>
     .AddEntityFrameworkStores<GameStoreDbContext>()
     .AddSignInManager<SignInManager<User>>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddScoped<AuthDAO>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 var app = builder.Build();
 
