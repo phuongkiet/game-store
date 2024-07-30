@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Models
 {
@@ -13,6 +8,6 @@ namespace DataAccess.Models
         public DateTime Birthday { get; set; }
         public double Money { get; set; }
         public byte Status { get; set; }
-        public ICollection<UserRole>? UserRoles { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }
