@@ -9,6 +9,7 @@ namespace DataAccess
 {
     public class GameStoreDbContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
+        //khởi tạo db
         public GameStoreDbContext() { }
 
         public GameStoreDbContext(DbContextOptions options) : base(options) { }

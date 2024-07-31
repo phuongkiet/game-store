@@ -96,8 +96,12 @@ builder.Services.AddIdentityCore<User>(opt =>
     .AddSignInManager<SignInManager<User>>()
     .AddDefaultTokenProviders();
 
+//Auth
 builder.Services.AddScoped<AuthDAO>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+//Genre
+builder.Services.AddScoped<GenreDAO>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 var app = builder.Build();
 
