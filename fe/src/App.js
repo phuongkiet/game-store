@@ -1,13 +1,17 @@
 import logo from "./logo.svg";
 import "./App.css";
+import Header from "./component/Header";
+import Login from "./component/Login";
 
 function App() {
 	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p className="text-3xl font-bold text-gray-300">Reactjs + Tailwind</p>
+		<div className="container">
+			<header>
+				<Header/>
 			</header>
+			<body>	
+				<Login/>
+			</body>
 		</div>
 	);
 }
