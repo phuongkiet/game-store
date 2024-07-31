@@ -17,7 +17,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("Genres")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         //IActionResult trả về status code
         public async Task<IActionResult> ListGenre()
         {
