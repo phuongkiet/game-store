@@ -9,14 +9,15 @@ export default function GenreTable() {
     const [listGenres, setListGenres] = useState([]);
     const [totalGenres, setTotalGenres] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [dataGenre, setDataGenre] = useState({});
 
     useEffect(() => {
-        getGenres(1);
-    }, []);
+        getGenres(currentPage);
+    }, [currentPage]);
 
     const getGenres = async (page) => {
         try {
@@ -32,7 +33,8 @@ export default function GenreTable() {
     };
 
     const handlePageClick = (event) => {
-        getGenres(+event.selected + 1);
+        const selectedPage = event.selected + 1;
+        setCurrentPage(selectedPage);
     };
 
     const handleAddNewGenre = () => {
@@ -129,9 +131,9 @@ export default function GenreTable() {
                 activeClassName="bg-sky-400 text-white rounded-full"
                 activeLinkClassName="w-full h-full flex items-center justify-center"
             />
-            <ModalAddGenre isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} />
-            <ModalUpdateGenre isOpen={isModalEditOpen} onClose={handleCloseModal} dataGenreEdit={dataGenre}/>
-            <ModalDeleteGenre isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataGenre={dataGenre}/>
+            <ModalAddGenre isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} onCreateSuccess={() => getGenres(1)} />
+            <ModalUpdateGenre isOpen={isModalEditOpen} onClose={handleCloseModal} dataGenreEdit={dataGenre} onEditSuccess={() => getGenres(currentPage)}/>
+            <ModalDeleteGenre isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataGenre={dataGenre} onDeleteSuccess={() => getGenres(currentPage)}/>
         </>
     );
 }
