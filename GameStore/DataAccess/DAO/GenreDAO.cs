@@ -1,6 +1,8 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Helper;
+using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,29 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
             return list;
+        }
+
+        public async Task<PagedList<Genre>> ListWithPaging(int page, int pageSize, string searchTerm)
+        {
+            IQueryable<Genre> query = null;
+            try
+            {
+                var context = new GameStoreDbContext();
+                query = context.Genres.AsQueryable();
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    query = query.Where(p => p.GenreName.ToLower().Contains(searchTerm));
+                }
+
+                var result = await PagedList<Genre>.ToPagedList(query.OrderBy(q => q.GenreId), page, pageSize);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return null;
         }
 
         public async Task< Genre > Get(int id)
@@ -64,18 +89,23 @@ namespace DataAccess.DAO
 
         public async Task Delete(int id)
         {
-            var exist = await Get(id);
             try
             {
-                if (exist != null)
+                using (var context = new GameStoreDbContext())
                 {
-                    var context = new GameStoreDbContext();
+                    var exist = await Get(id);
+                    if (exist == null)
+                    {
+                        throw new Exception("Genre not found.");
+                    }
+
+                    if (await IsGenreInUse(id))
+                    {
+                        throw new Exception("Cannot delete the genre as it is associated with one or more games.");
+                    }
+
                     context.Genres.Remove(exist);
                     await context.SaveChangesAsync();
-                }
-                else
-                {
-                    throw new Exception("Dữ liệu chưa có");
                 }
             }
             catch (Exception ex)
@@ -105,6 +135,12 @@ namespace DataAccess.DAO
             {
                 throw new Exception(ex.Message);
             }
+        }
+
+        public async Task<bool> IsGenreInUse(int id)
+        {
+            var context = new GameStoreDbContext();
+            return await context.GameGenres.AnyAsync(gg => gg.GenreId == id) ? true : false;
         }
     }
 }
