@@ -1,4 +1,5 @@
 ﻿using DataAccess.DAO;
+using DataAccess.Helper;
 using DataAccess.Models;
 using Repository.IRepository;
 using System;
@@ -23,6 +24,11 @@ namespace Repository
             return await _genreDAO.List();
         }
 
+        public async Task<PagedList<Genre>> ListWithPaging(int page, int pageSize, string searchTerm)
+        {
+            return await _genreDAO.ListWithPaging(page, pageSize, searchTerm);
+        }
+
         public async Task<Genre> Get(int id)
         {
             return await _genreDAO.Get(id);
@@ -41,6 +47,11 @@ namespace Repository
         public async Task Update(Genre genre)
         {
             await _genreDAO.Update(genre);
+        }
+
+        public async Task<bool> IsGenreInUse(int id)
+        {
+            return await _genreDAO.IsGenreInUse(id);
         }
     }
 }
