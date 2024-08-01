@@ -102,6 +102,9 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 //Genre
 builder.Services.AddScoped<GenreDAO>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+//User
+builder.Services.AddScoped<UserDAO>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

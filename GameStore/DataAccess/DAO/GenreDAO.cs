@@ -72,7 +72,7 @@ namespace DataAccess.DAO
             {
                 if (exist != null)
                 {
-                    throw new Exception("Dữ liệu đã có");
+                    throw new Exception("Dữ liệu " + $"{genre.GenreName} đã tồn tại");
                 }
                 else
                 {
