@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import { updateGenre } from "../services/GenreService";
 
-export default function ModalUpdateGenre({ isOpen, onClose, onSubmit, dataGenreEdit }) {
+export default function ModalUpdateGenre({ isOpen, onClose, onSubmit, dataGenreEdit, onEditSuccess }) {
     const [GenreId, setGenreId] = useState(0);
     const [GenreName, setGenreName] = useState("");
 
@@ -22,12 +22,14 @@ export default function ModalUpdateGenre({ isOpen, onClose, onSubmit, dataGenreE
           setGenreId(0); 
           setGenreName(""); 
           toast.success("Genre updated successfully!");
-          window.location.reload();
+          onEditSuccess();
         } else if (res && (res.Success === false)) {
           toast.error("Error when updating genre!"); 
+          onClose();
         }
       } catch (error) {
         toast.error("An unexpected error occurred!"); 
+        onClose();
       }
     };
 

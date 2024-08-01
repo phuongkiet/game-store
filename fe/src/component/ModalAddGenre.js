@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createGenre } from '../services/GenreService';
 import { toast } from 'react-toastify';
 
-export default function ModalAddGenre({ isOpen, onClose, onSubmit }) {
+export default function ModalAddGenre({ isOpen, onClose, onSubmit, onCreateSuccess }) {
   const [GenreId, setGenreId] = useState(0);
   const [GenreName, setGenreName] = useState("");
 
@@ -16,12 +16,14 @@ export default function ModalAddGenre({ isOpen, onClose, onSubmit }) {
         setGenreId(0); 
         setGenreName(""); 
         toast.success("Genre created successfully!");
-        window.location.reload();
+        onCreateSuccess();
       } else if (res && (res.Success === false)) {
         toast.error("Error when creating genre!"); 
+        onClose(); 
       }
     } catch (error) {
       toast.error("An unexpected error occurred!"); 
+      onClose(); 
     }
   };
 
