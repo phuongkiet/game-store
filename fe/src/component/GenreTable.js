@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { fetchAllGenre } from '../services/GenreService';
-import ReactPaginate from 'react-paginate';
-import ModalAddGenre from './ModalAddGenre';
-import ModalUpdateGenre from './ModalUpdateGenre';
-import ModalDeleteGenre from './ModalDeleteGenre';
+import React, { useEffect, useState } from "react";
+import { fetchAllGenre } from "../services/GenreService";
+import { FaTrashAlt } from "react-icons/fa";
+import { GoPencil } from "react-icons/go";
+import ReactPaginate from "react-paginate";
+import ModalAddGenre from "./ModalAddGenre";
+import ModalUpdateGenre from "./ModalUpdateGenre";
+import ModalDeleteGenre from "./ModalDeleteGenre";
 
 export default function GenreTable() {
     const [listGenres, setListGenres] = useState([]);
@@ -33,40 +35,40 @@ export default function GenreTable() {
         }
     };
 
-    const handlePageClick = (event) => {
-        const selectedPage = event.selected + 1;
-        setCurrentPage(selectedPage);
-    };
+	const handlePageClick = (event) => {
+		const selectedPage = event.selected + 1;
+		setCurrentPage(selectedPage);
+	};
 
-    const handleAddNewGenre = () => {
-        setIsModalOpen(true);
-    };
+	const handleAddNewGenre = () => {
+		setIsModalOpen(true);
+	};
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-        setIsModalEditOpen(false);
-        setIsModalDeleteOpen(false);
-    };
+	const handleCloseModal = () => {
+		setIsModalOpen(false);
+		setIsModalEditOpen(false);
+		setIsModalDeleteOpen(false);
+	};
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Here you can handle the form submission logic, like adding a new genre
-        // Example:
-        // const newGenreName = event.target.genreName.value;
-        // Call the service to add the new genre
-        // After adding, you may want to refresh the genre list or close the modal
-        setIsModalOpen(false);
-    };
+	const handleSubmit = (event) => {
+		event.preventDefault();
+		// Here you can handle the form submission logic, like adding a new genre
+		// Example:
+		// const newGenreName = event.target.genreName.value;
+		// Call the service to add the new genre
+		// After adding, you may want to refresh the genre list or close the modal
+		setIsModalOpen(false);
+	};
 
-    const handleEditGenre = (genre) => {
-        setDataGenre(genre);
-        setIsModalEditOpen(true);
-    }
+	const handleEditGenre = (genre) => {
+		setDataGenre(genre);
+		setIsModalEditOpen(true);
+	};
 
-    const handleDeleteGenre = (genre) => {
-        setDataGenre(genre);
-        setIsModalDeleteOpen(true);
-    }
+	const handleDeleteGenre = (genre) => {
+		setDataGenre(genre);
+		setIsModalDeleteOpen(true);
+	};
 
     const handleSearch = (event) => {
         let term = event.target.value;
@@ -76,7 +78,6 @@ export default function GenreTable() {
             getGenres(currentPage, searchTerm);
         }
     }
-
     return (
         <>
             <div className="p-4">

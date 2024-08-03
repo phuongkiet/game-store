@@ -4,18 +4,23 @@ import Header from "./component/Header";
 import Login from "./component/Login";
 import GenreTable from "./component/GenreTable";
 import Footer from "./component/Footer";
-import { ToastContainer, toast } from 'react-toastify';
+import UserTable from "./component/UserTable";
+import { ToastContainer, toast } from "react-toastify";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
 	return (
-		<>
+		<BrowserRouter>
 			<div className="container mx-auto">
 				<header>
-					<Header/>
+					<Header />
 				</header>
 				<body className="mb-10">	
 					{/* <Login/> */}
-					<GenreTable/>
+					<Routes>
+						<Route path="/Genre" element={<GenreTable />} />
+						<Route path="/User" element={<UserTable />} />
+					</Routes>
 				</body>
 				<footer>
 					<Footer/>
@@ -32,8 +37,8 @@ function App() {
 				draggable
 				pauseOnHover
 				theme="colored"
-				/>
-		</>
+			/>
+		</BrowserRouter>
 	);
 }
 

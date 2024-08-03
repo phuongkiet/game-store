@@ -27,7 +27,7 @@ namespace DataAccess.DAO
             return list;
         }
 
-        public async Task<PagedList<Genre>> ListWithPaging(int page, int pageSize, string searchTerm)
+        public async Task<PagedList<Genre>> ListGenreWithPaging(int page, int pageSize, string searchTerm)
         {
             IQueryable<Genre> query = null;
             try
@@ -47,7 +47,6 @@ namespace DataAccess.DAO
             {
                 throw new Exception(ex.Message);
             }
-            return null;
         }
 
         public async Task< Genre > Get(int id)
@@ -72,7 +71,7 @@ namespace DataAccess.DAO
             {
                 if (exist != null)
                 {
-                    throw new Exception("Dữ liệu đã có");
+                    throw new Exception("Genre " + $"{genre.GenreName} already exist");
                 }
                 else
                 {
@@ -128,7 +127,7 @@ namespace DataAccess.DAO
                 }
                 else
                 {
-                    throw new Exception("Dữ liệu chưa có");
+                    throw new Exception("Genre not found");
                 }
             }
             catch (Exception ex)

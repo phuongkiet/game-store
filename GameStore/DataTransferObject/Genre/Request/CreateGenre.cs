@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 namespace DataTransferObject.Genre.Request
 {
     public class CreateGenre
-    {
-        public int GenreId { get; set; }
+    { 
         public string GenreName { get; set; }
     }
 }
