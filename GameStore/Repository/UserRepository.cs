@@ -1,4 +1,5 @@
 ﻿using DataAccess.DAO;
+using DataAccess.Helper;
 using DataAccess.Models;
 using Repository.IRepository;
 using System;
@@ -20,6 +21,11 @@ namespace Repository
         public async Task<List<User>> List()
         {
             return await _userDAO.List();
+        }
+
+        public async Task<PagedList<User>> ListUserWithPaging(int page, int pageSize, string SreachTerm)
+        {
+            return await _userDAO.ListUserWithPaging(page, pageSize , SreachTerm);
         }
 
         public async Task<User> Get(int id)

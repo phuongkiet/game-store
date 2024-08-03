@@ -1,36 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllGenre } from "../services/GenreService";
+import { fetchAllUser, fetchAllUsers } from "../services/UserService";
+import ReactPaginate from "react-paginate";
 import { FaTrashAlt } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
-import ReactPaginate from "react-paginate";
-import ModalAddGenre from "./ModalAddGenre";
-import ModalUpdateGenre from "./ModalUpdateGenre";
-import ModalDeleteGenre from "./ModalDeleteGenre";
+// import ModalAddUser from './ModalAddUser';
+// import ModalUpdateUser from './ModalUpdateUser';
+// import ModalDeleteUser from './ModalDeleteUser';
 
-export default function GenreTable() {
-	const [listGenres, setListGenres] = useState([]);
-	const [totalGenres, setTotalGenres] = useState(0);
+export default function UserTable() {
+	const [listUsers, setListUsers] = useState([]);
+	const [totalUsers, setTotalUsers] = useState(0);
 	const [totalPages, setTotalPages] = useState(0);
 	const [currentPage, setCurrentPage] = useState(1);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 	const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-	const [dataGenre, setDataGenre] = useState({});
+	const [dataUser, setDataUser] = useState({});
 
 	useEffect(() => {
-		getGenres(currentPage);
+		getUsers(currentPage);
 	}, [currentPage]);
 
-	const getGenres = async (page) => {
+	const getUsers = async (page) => {
 		try {
-			let res = await fetchAllGenre(page);
+			let res = await fetchAllUsers(page);
 			if (res && res.data) {
-				setTotalGenres(res.TotalCount);
-				setListGenres(res.data);
+				setTotalUsers(res.TotalCount);
+				setListUsers(res.data);
 				setTotalPages(res.TotalPages);
 			}
 		} catch (error) {
-			console.error("Error fetching genres:", error);
+			console.error("Error fetching Users:", error);
 		}
 	};
 
@@ -39,7 +39,7 @@ export default function GenreTable() {
 		setCurrentPage(selectedPage);
 	};
 
-	const handleAddNewGenre = () => {
+	const handleAddNewUser = () => {
 		setIsModalOpen(true);
 	};
 
@@ -51,21 +51,21 @@ export default function GenreTable() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		// Here you can handle the form submission logic, like adding a new genre
+		// Here you can handle the form submission logic, like adding a new User
 		// Example:
-		// const newGenreName = event.target.genreName.value;
-		// Call the service to add the new genre
-		// After adding, you may want to refresh the genre list or close the modal
+		// const newUserName = event.target.UserName.value;
+		// Call the service to add the new User
+		// After adding, you may want to refresh the User list or close the modal
 		setIsModalOpen(false);
 	};
 
-	const handleEditGenre = (genre) => {
-		setDataGenre(genre);
+	const handleEditUser = (User) => {
+		setDataUser(User);
 		setIsModalEditOpen(true);
 	};
 
-	const handleDeleteGenre = (genre) => {
-		setDataGenre(genre);
+	const handleDeleteUser = (User) => {
+		setDataUser(User);
 		setIsModalDeleteOpen(true);
 	};
 
@@ -74,11 +74,11 @@ export default function GenreTable() {
 			<div className="p-4">
 				<div className="flex justify-between items-center mb-4">
 					<div>
-						<h1 className="text-2xl font-bold">Genre Table</h1>
-						<p className="text-gray-500">A list of all the genres.</p>
+						<h1 className="text-2xl font-bold">User Table</h1>
+						<p className="text-gray-500">A list of all the Users.</p>
 					</div>
-					<button onClick={handleAddNewGenre} className="bg-sky-400 text-white px-4 py-2 rounded-md">
-						Add new genre
+					<button onClick={handleAddNewUser} className="bg-sky-400 text-white px-4 py-2 rounded-md">
+						Add new User
 					</button>
 				</div>
 				<div className="overflow-x-auto">
@@ -87,26 +87,28 @@ export default function GenreTable() {
 							<tr>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Id</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Name</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Email</th>
 								<th className="px-6 py-3 text-right text-sm font-semibold text-gray-600">Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							{listGenres && listGenres.length > 0 ? (
-								listGenres.map((item, index) => (
+							{listUsers && listUsers.length > 0 ? (
+								listUsers.map((item, index) => (
 									<tr key={index} className="border-t border-gray-200">
-										<td className="px-6 py-4 text-sm text-gray-900">{item.GenreId}</td>
-										<td className="px-6 py-4 text-sm text-gray-500">{item.GenreName}</td>
+										<td className="px-6 py-4 text-sm text-gray-900">{item.Id}</td>
+										<td className="px-6 py-4 text-sm text-gray-500">{item.Name}</td>
+										<td className="px-6 py-4 text-sm text-gray-500">{item.Email}</td>
 										<td className="px-6 py-4 text-right text-sm font-medium">
 											<div className="flex float-right">
 												<GoPencil
 													href="#"
 													className="text-xl text-yellow-400 hover:text-yellow-200 mr-5"
-													onClick={() => handleEditGenre(item)}
+													onClick={() => handleEditUser(item)}
 												/>
 												<FaTrashAlt
 													href="#"
 													className="text-xl text-red-400 hover:text-red-200"
-													onClick={() => handleDeleteGenre(item)}
+													onClick={() => handleDeleteUser(item)}
 												/>
 											</div>
 										</td>
@@ -115,7 +117,7 @@ export default function GenreTable() {
 							) : (
 								<tr>
 									<td colSpan="3" className="px-6 py-4 text-center text-sm text-gray-500">
-										No genres available.
+										No Users available.
 									</td>
 								</tr>
 							)}
@@ -142,24 +144,9 @@ export default function GenreTable() {
 				activeClassName="bg-sky-400 text-white rounded-full"
 				activeLinkClassName="w-full h-full flex items-center justify-center"
 			/>
-			<ModalAddGenre
-				isOpen={isModalOpen}
-				onClose={handleCloseModal}
-				onSubmit={handleSubmit}
-				onCreateSuccess={() => getGenres(1)}
-			/>
-			<ModalUpdateGenre
-				isOpen={isModalEditOpen}
-				onClose={handleCloseModal}
-				dataGenreEdit={dataGenre}
-				onEditSuccess={() => getGenres(currentPage)}
-			/>
-			<ModalDeleteGenre
-				isOpen={isModalDeleteOpen}
-				onClose={handleCloseModal}
-				dataGenre={dataGenre}
-				onDeleteSuccess={() => getGenres(currentPage)}
-			/>
+			{/* <ModalAddUser isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} onCreateSuccess={() => getUsers(1)} />
+            <ModalUpdateUser isOpen={isModalEditOpen} onClose={handleCloseModal} dataUserEdit={dataUser} onEditSuccess={() => getUsers(currentPage)}/>
+            <ModalDeleteUser isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataUser={dataUser} onDeleteSuccess={() => getUsers(currentPage)}/> */}
 		</>
 	);
 }
