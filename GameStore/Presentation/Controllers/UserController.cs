@@ -8,6 +8,7 @@ using DataTransferObject.User.Request;
 using DataAccess.Models;
 using Repository;
 using DataAccess.Helper;
+using System.Collections.Immutable;
 
 namespace Presentation.Controllers
 {
@@ -23,7 +24,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("list-users")]
-/*        [Authorize(Roles = "Admin")]*/
+        /*[Authorize(Roles = "Admin")]*/
         public async Task<IActionResult> ListUsers()
         {
             return Ok(await _userRepository.List());        
@@ -60,7 +61,7 @@ namespace Presentation.Controllers
                     Email = createUsers.Email,
                     Birthday = createUsers.Birthday,
                     PhoneNumber = createUsers.PhoneNumber,
-                    Status = createUsers.Status,
+                    Status = 1,
                     Money = createUsers.Money,
                     UserName = createUsers.Email
                 };
@@ -109,6 +110,7 @@ namespace Presentation.Controllers
                     return BadRequest(new ApiResponse { Success = false, Message = "Something not right with fields" });
                 }
 
+                //check User
                 if (await _userRepository.Get(id) == null || id == null)
                 {
                     return NotFound(new ApiResponse { Success = false, Message = "User not found" });

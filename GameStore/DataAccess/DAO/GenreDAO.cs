@@ -27,7 +27,7 @@ namespace DataAccess.DAO
             return list;
         }
 
-        public async Task<PagedList<Genre>> ListWithPaging(int page, int pageSize, string searchTerm)
+        public async Task<PagedList<Genre>> ListGenreWithPaging(int page, int pageSize, string searchTerm)
         {
             IQueryable<Genre> query = null;
             try

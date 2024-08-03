@@ -1,36 +1,35 @@
 ﻿using DataAccess.Models;
 using DataTransferObject;
-using DataTransferObject.Genre.Request;
-using Microsoft.AspNetCore.Authorization;
+using DataTransferObject.Game.Request;
+using DataTransferObject.User.Request;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Repository;
 using Repository.IRepository;
 
 namespace Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GenreController : ControllerBase
+    public class GameController : ControllerBase
     {
-        private IGenreRepository _genreRepository;
+        private IGameRepository _gameRepository;
 
-        public GenreController(IGenreRepository genreRepository)
+        public GameController(IGameRepository gameRepository)
         {
-            _genreRepository = genreRepository;
+            _gameRepository = gameRepository;
         }
 
-        [HttpGet("list-genres")]
-        //[Authorize(Roles = "Admin")]
-        //IActionResult trả về status code
-        public async Task<IActionResult> ListGenre()
+        [HttpGet("list-games")]
+        public async Task<IActionResult> ListGame()
         {
-            return Ok(await _genreRepository.List());
+            return Ok(await _gameRepository.List());
         }
 
-        [HttpGet("get-genres")]
-        public async Task<IActionResult> ListGenrePaging(int page = 1, int pageSize = 3, string searchTerm = null)
+        [HttpGet("get-games")]
+        public async Task<IActionResult> GetGames(int page = 1, int pageSize = 3, string searchTerm = null)
         {
-            var data = await _genreRepository.ListGenreWithPaging(page, pageSize, searchTerm);
+            var data = await _gameRepository.ListGameWithPaging(page, pageSize, searchTerm);
             var metadata = new
             {
                 data.TotalCount,
@@ -42,8 +41,8 @@ namespace Presentation.Controllers
             return Ok(metadata);
         }
 
-        [HttpPost("create-genre")]
-        public async Task<IActionResult> CreateGenre([FromBody] CreateGenre genre)
+        [HttpPost("create-game")]
+        public async Task<IActionResult> CreateGame([FromBody] CreateGame game)
         {
             try
             {
@@ -52,12 +51,15 @@ namespace Presentation.Controllers
                     return BadRequest(new ApiResponse { Success = false, Message = "Something not right with fields" });
                 }
 
-                var g = new Genre
+                var g = new Game
                 {
-                    GenreName = genre.GenreName
+                    Title = game.Title,
+                    Price = game.Price,
+                    Stock = game.Stock,
+                    Description = game.Description,
                 };
 
-                await _genreRepository.Create(g);
+                await _gameRepository.Create(g);
                 return Ok(new ApiResponse { Success = true, Message = "Created successfully" });
             }
             catch (Exception ex)
@@ -65,8 +67,9 @@ namespace Presentation.Controllers
                 return StatusCode(500, new ApiResponse { Success = false, Message = ex.Message });
             }
         }
-        [HttpPut("update-genre/{id}")]
-        public async Task<IActionResult> UpdateGenre(int id, [FromBody] UpdateGenre genre)
+
+        [HttpPut("update-game/{id}")]
+        public async Task<IActionResult> UpdateGame(int id, [FromBody] UpdateGame game)
         {
             try
             {
@@ -75,13 +78,22 @@ namespace Presentation.Controllers
                     return BadRequest(new ApiResponse { Success = false, Message = "Something not right with fields" });
                 }
 
-                var g = new Genre
+                //check Game
+                if (await _gameRepository.Get(id) == null || id == null)
                 {
-                    GenreId = id,
-                    GenreName = genre.GenreName
+                    return NotFound(new ApiResponse { Success = false, Message = "Game not found" });
+                }
+
+                var g = new Game()
+                {
+                    GameId = id,
+                    Title = game.Title,
+                    Price = game.Price,
+                    Stock = game.Stock,
+                    Description = game.Description,
                 };
 
-                await _genreRepository.Update(g);
+                await _gameRepository.Update(g);
                 return Ok(new ApiResponse { Success = true, Message = "Updated successfully" });
             }
             catch (Exception ex)
@@ -89,18 +101,20 @@ namespace Presentation.Controllers
                 return StatusCode(500, new ApiResponse { Success = false, Message = ex.Message });
             }
         }
-        [HttpDelete("delete-genre/{id}")]
-        public async Task<IActionResult> DeleteGenre(int id)
+
+        [HttpDelete("delete-game/{id}")]
+        public async Task<IActionResult> DeleteGame(int id)
         {
             try
             {
-                if (await _genreRepository.IsGenreInUse(id))
+                //check if gmae is in use
+                if (await _gameRepository.IsGameInUse(id))
                 {
-                    return StatusCode(400, new ApiResponse { Success = false, Message = "Genre is in use with a game, cannot delete." });
+                    return StatusCode(400, new ApiResponse { Success = false, Message = "Game is in use with other tables, cannot delete." });
                 }
                 else
                 {
-                    await _genreRepository.Delete(id);
+                    await _gameRepository.Delete(id);
                     return Ok(new ApiResponse { Success = true, Message = "Deleted successfully." });
                 }
             }
