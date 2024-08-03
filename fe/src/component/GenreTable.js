@@ -14,14 +14,15 @@ export default function GenreTable() {
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
     const [dataGenre, setDataGenre] = useState({});
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        getGenres(currentPage);
+        getGenres(currentPage, searchTerm);
     }, [currentPage]);
 
-    const getGenres = async (page) => {
+    const getGenres = async (page, searchTerm) => {
         try {
-            let res = await fetchAllGenre(page);
+            let res = await fetchAllGenre(page, searchTerm);
             if (res && res.data) {
                 setTotalGenres(res.TotalCount);
                 setListGenres(res.data);
@@ -67,6 +68,15 @@ export default function GenreTable() {
         setIsModalDeleteOpen(true);
     }
 
+    const handleSearch = (event) => {
+        let term = event.target.value;
+        if(term){
+            getGenres(currentPage, term);
+        }else{
+            getGenres(currentPage, searchTerm);
+        }
+    }
+
     return (
         <>
             <div className="p-4">
@@ -81,6 +91,16 @@ export default function GenreTable() {
                     >
                         Add new genre
                     </button>
+                </div>
+                <div className="flex justify-start mt-4 mb-4">
+                    <input
+                    id="searchTerm"
+                    name="searchTerm"
+                    type="text"
+                    placeholder='Search Genre here...'
+                    onChange={(event) => handleSearch(event)}
+                    className="block w-60 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
+                    />
                 </div>
                 <div className="overflow-x-auto">
                     <table className="min-w-full bg-white border border-gray-200">
@@ -131,9 +151,9 @@ export default function GenreTable() {
                 activeClassName="bg-sky-400 text-white rounded-full"
                 activeLinkClassName="w-full h-full flex items-center justify-center"
             />
-            <ModalAddGenre isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} onCreateSuccess={() => getGenres(1)} />
-            <ModalUpdateGenre isOpen={isModalEditOpen} onClose={handleCloseModal} dataGenreEdit={dataGenre} onEditSuccess={() => getGenres(currentPage)}/>
-            <ModalDeleteGenre isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataGenre={dataGenre} onDeleteSuccess={() => getGenres(currentPage)}/>
+            <ModalAddGenre isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} onCreateSuccess={() => getGenres(1, searchTerm)} />
+            <ModalUpdateGenre isOpen={isModalEditOpen} onClose={handleCloseModal} dataGenreEdit={dataGenre} onEditSuccess={() => getGenres(currentPage, searchTerm)}/>
+            <ModalDeleteGenre isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataGenre={dataGenre} onDeleteSuccess={() => getGenres(currentPage, searchTerm)}/>
         </>
     );
 }
