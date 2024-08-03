@@ -19,15 +19,15 @@ namespace Presentation.Controllers
             _genreRepository = genreRepository;
         }
 
-        [HttpGet("Genres")]
-        [Authorize(Roles = "Admin")]
+        [HttpGet("list-genres")]
+        //[Authorize(Roles = "Admin")]
         //IActionResult trả về status code
         public async Task<IActionResult> ListGenre()
         {
             return Ok(await _genreRepository.List());
         }
 
-        [HttpGet("getGenres")]
+        [HttpGet("get-genres")]
         public async Task<IActionResult> ListGenrePaging(int page = 1, int pageSize = 3, string searchTerm = null)
         {
             var data = await _genreRepository.ListWithPaging(page, pageSize, searchTerm);

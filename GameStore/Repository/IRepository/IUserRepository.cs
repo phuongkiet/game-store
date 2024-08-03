@@ -1,4 +1,5 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Helper;
+using DataAccess.Models;
 
 namespace Repository.IRepository
 {
@@ -9,5 +10,6 @@ namespace Repository.IRepository
         Task<User> Get(int id);
         Task<List<User>> List();
         Task Update(User user);
+        Task<PagedList<User>> ListUserWithPaging(int page, int pageSize, string SreachTerm);
     }
 }
