@@ -24,9 +24,9 @@ namespace Repository
             return await _genreDAO.List();
         }
 
-        public async Task<PagedList<Genre>> ListWithPaging(int page, int pageSize, string searchTerm)
+        public async Task<PagedList<Genre>> ListGenreWithPaging(int page, int pageSize, string searchTerm)
         {
-            return await _genreDAO.ListWithPaging(page, pageSize, searchTerm);
+            return await _genreDAO.ListGenreWithPaging(page, pageSize, searchTerm);
         }
 
         public async Task<Genre> Get(int id)

@@ -87,6 +87,7 @@ namespace DataAccess.DAO
                 }
                 else
                 {
+                    //problem with var password in line 92
                     string password = "Pa$$w0rd";
                     await _userManager.CreateAsync(user, password);
                 }
