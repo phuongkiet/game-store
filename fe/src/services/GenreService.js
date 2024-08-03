@@ -1,7 +1,7 @@
 import axios from "./custom-axios";
 
 const fetchAllGenre = (page, searchTerm) => {
-    return axios.get(`api/Genre/getGenres?page=${page}&pageSize=5&searchTerm=${searchTerm}`);
+    return axios.get(`api/Genre/get-genres?page=${page}&pageSize=5&searchTerm=${searchTerm}`);
 }
 
 const createGenre = (GenreId, GenreName) => {

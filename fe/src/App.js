@@ -16,10 +16,10 @@ function App() {
 					<Header />
 				</header>
 				<body className="mb-10">	
-					{/* <Login/> */}
 					<Routes>
 						<Route path="/Genre" element={<GenreTable />} />
 						<Route path="/User" element={<UserTable />} />
+						<Route path="/Login" element={<Login/>}/>
 					</Routes>
 				</body>
 				<footer>
