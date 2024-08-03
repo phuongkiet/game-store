@@ -7,6 +7,7 @@ import Footer from "./component/Footer";
 import UserTable from "./component/UserTable";
 import { ToastContainer, toast } from "react-toastify";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Register from "./component/Register";
 
 function App() {
 	return (
@@ -20,6 +21,7 @@ function App() {
 						<Route path="/Genre" element={<GenreTable />} />
 						<Route path="/User" element={<UserTable />} />
 						<Route path="/Login" element={<Login/>}/>
+						<Route path="/Register" element={<Register/>}/>
 					</Routes>
 				</body>
 				<footer>

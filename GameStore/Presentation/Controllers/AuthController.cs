@@ -1,4 +1,5 @@
 ﻿using DataAccess.Models;
+using DataTransferObject;
 using DataTransferObject.Auth;
 using DataTransferObject.User.Response;
 using Microsoft.AspNetCore.Authorization;
@@ -27,13 +28,13 @@ namespace Presentation.Controllers
                 var (result, user) = await _authRepository.Register(registerDTO);
                 if (result.Succeeded)
                 {
-                    return Ok("Register Successfully");
+                    return Ok(new ApiResponse { Success = true, Message = "Registered successfully" });
                 }
-                return BadRequest(result.Errors);
+                return BadRequest(new ApiResponse { Success = false, Message = "Something not right" });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, new ApiResponse { Success = false, Message = ex.Message });
             }
         }
 
@@ -44,7 +45,7 @@ namespace Presentation.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(new ApiResponse { Success = false, Message = "Something not right with fields" });
             }
 
             var user = await _authRepository.Login(loginDTO);
@@ -63,11 +64,23 @@ namespace Presentation.Controllers
                     Status = user.Status,
                     Token = token
                 };
-                return Ok(userData);
+                return Ok(new
+                {
+                    UserData = userData,
+                    Response = new ApiResponse
+                    {
+                        Success = true,
+                        Message = "Logged in successfully"
+                    }
+                });
             }
             else
             {
-                return Unauthorized();
+                return Unauthorized(new ApiResponse
+                {
+                    Success = false,
+                    Message = "Invalid credentials"
+                });
             }
         }
     }
