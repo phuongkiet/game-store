@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {toast} from 'react-toastify';
-import AuthService from '../services/AuthService';
+import AuthService from '../../services/AuthService';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {

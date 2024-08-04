@@ -75,6 +75,8 @@ namespace DataAccess.DAO
                 else
                 {
                     var context = new GameStoreDbContext();
+                    game.Status = 1;
+                    game.CreatedAt = DateTime.Now;
                     await context.Games.AddAsync(game);
                     await context.SaveChangesAsync();
                 }
@@ -101,8 +103,8 @@ namespace DataAccess.DAO
                     {
                         throw new Exception("Cannot delete the game as it is associated with one or more tables.");
                     }
-
-                    context.Games.Remove(exist);
+                    exist.Status = 0;
+                    context.Games.Update(exist);
                     await context.SaveChangesAsync();
                 }
             }
@@ -124,6 +126,7 @@ namespace DataAccess.DAO
                     exist.Price = game.Price;
                     exist.Description = game.Description;
                     exist.Stock = game.Stock;
+                    exist.Status = game.Status;
                     context.Games.Update(exist);
                     await context.SaveChangesAsync();
                 } 

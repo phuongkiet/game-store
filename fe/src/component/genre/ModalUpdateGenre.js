@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
-import { updateGenre } from "../services/GenreService";
+import { updateGenre } from "../../services/GenreService";
 
 export default function ModalUpdateGenre({ isOpen, onClose, onSubmit, dataGenreEdit, onEditSuccess }) {
     const [GenreId, setGenreId] = useState(0);

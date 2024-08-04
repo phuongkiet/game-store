@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { deleteGenre } from '../services/GenreService';
+import { deleteGenre } from '../../services/GenreService';
 import { toast } from 'react-toastify';
 
 export default function ModalDeleteGenre({ isOpen, onClose, dataGenre, onDeleteSuccess }) {

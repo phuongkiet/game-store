@@ -24,5 +24,7 @@ namespace DataAccess.Models
 
         public DateTime CreatedAt { get; set; }
 
+        public ICollection<OrderDetail> OrderDetails { get; set; }  
+
     }
 }

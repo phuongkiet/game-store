@@ -56,7 +56,7 @@ namespace Presentation.Controllers
                     Title = game.Title,
                     Price = game.Price,
                     Stock = game.Stock,
-                    Description = game.Description,
+                    Description = game.Description
                 };
 
                 await _gameRepository.Create(g);
@@ -91,6 +91,7 @@ namespace Presentation.Controllers
                     Price = game.Price,
                     Stock = game.Stock,
                     Description = game.Description,
+                    Status = game.Status
                 };
 
                 await _gameRepository.Update(g);

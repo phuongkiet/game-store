@@ -1,33 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllGenre } from "../services/GenreService";
+import { fetchAllGame } from "../../services/GameService";
 import { FaTrashAlt } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
 import ReactPaginate from "react-paginate";
-import ModalAddGenre from "./ModalAddGenre";
-import ModalUpdateGenre from "./ModalUpdateGenre";
-import ModalDeleteGenre from "./ModalDeleteGenre";
+import ModalAddGame from "./ModalAddGame";
+import ModalDeleteGame from "./ModalDeleteGame";
+import ModalUpdateGame from "./ModalUpdateGame";
 
-export default function GenreTable() {
-    const [listGenres, setListGenres] = useState([]);
-    const [totalGenres, setTotalGenres] = useState(0);
+export default function GameTable() {
+    const [listGames, setListGames] = useState([]);
+    const [totalGames, setTotalGames] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalEditOpen, setIsModalEditOpen] = useState(false);
     const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
-    const [dataGenre, setDataGenre] = useState({});
+    const [dataGame, setDataGame] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
-        getGenres(currentPage, searchTerm);
+        getGames(currentPage, searchTerm);
     }, [currentPage]);
 
-    const getGenres = async (page, searchTerm) => {
+    const getGames = async (page, searchTerm) => {
         try {
-            let res = await fetchAllGenre(page, searchTerm);
+            let res = await fetchAllGame(page, searchTerm);
+            console.log(">>> check res: ", res);
             if (res && res.data) {
-                setTotalGenres(res.TotalCount);
-                setListGenres(res.data);
+                setTotalGames(res.TotalCount);
+                setListGames(res.data);
                 setTotalPages(res.TotalPages);
             }
         } catch (error) {
@@ -52,30 +53,25 @@ export default function GenreTable() {
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		// Here you can handle the form submission logic, like adding a new genre
-		// Example:
-		// const newGenreName = event.target.genreName.value;
-		// Call the service to add the new genre
-		// After adding, you may want to refresh the genre list or close the modal
 		setIsModalOpen(false);
 	};
 
-	const handleEditGenre = (genre) => {
-		setDataGenre(genre);
+	const handleEditGenre = (game) => {
+		setDataGame(game);
 		setIsModalEditOpen(true);
 	};
 
-	const handleDeleteGenre = (genre) => {
-		setDataGenre(genre);
+	const handleDeleteGenre = (game) => {
+		setDataGame(game);
 		setIsModalDeleteOpen(true);
 	};
 
     const handleSearch = (event) => {
         let term = event.target.value;
         if(term){
-            getGenres(currentPage, term);
+            getGames(currentPage, term);
         }else{
-            getGenres(currentPage, searchTerm);
+            getGames(currentPage, searchTerm);
         }
     }
     return (
@@ -83,14 +79,14 @@ export default function GenreTable() {
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                     <div>
-                        <h1 className="text-2xl font-bold">Genre Table</h1>
-                        <p className="text-gray-500">A list of all the genres.</p>
+                        <h1 className="text-2xl font-bold">Game Table</h1>
+                        <p className="text-gray-500">A list of all the games.</p>
                     </div>
                     <button
                         onClick={handleAddNewGenre}
                         className="bg-sky-400 text-white px-4 py-2 rounded-md"
                     >
-                        Add new genre
+                        Add new game
                     </button>
                 </div>
                 <div className="flex justify-start mt-4 mb-4">
@@ -98,7 +94,7 @@ export default function GenreTable() {
                     id="searchTerm"
                     name="searchTerm"
                     type="text"
-                    placeholder='Search Genre here...'
+                    placeholder='Search Game here...'
                     onChange={(event) => handleSearch(event)}
                     className="block w-60 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
                     />
@@ -108,28 +104,38 @@ export default function GenreTable() {
                         <thead className="bg-gray-100">
                             <tr>
                                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Id</th>
-                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Name</th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Title</th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Description</th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Price</th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Stock</th>
+                                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
                                 <th className="px-6 py-3 text-right text-sm font-semibold text-gray-600">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {listGenres && listGenres.length > 0 ? (
-                                listGenres.map((item, index) => (
-                                    <tr key={index} className="border-t border-gray-200">
-                                        <td className="px-6 py-4 text-sm text-gray-900">{item.GenreId}</td>
-                                        <td className="px-6 py-4 text-sm text-gray-500">{item.GenreName}</td>
-                                        <td className="px-6 py-4 text-right text-sm font-medium">
-                                            <a href="#" className="text-blue-600 hover:text-blue-900 mr-5" onClick={() => handleEditGenre(item)}>Edit</a>
-                                            <a href="#" className="text-blue-600 hover:text-blue-900" onClick={() => handleDeleteGenre(item)}>Delete</a>
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="3" className="px-6 py-4 text-center text-sm text-gray-500">No genres available.</td>
+                        {listGames && listGames.length > 0 ? (
+                            listGames.map((item, index) => (
+                                <tr key={index} className="border-t border-gray-200">
+                                    <td className="px-6 py-4 text-sm text-gray-900">{item.GameId}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">{item.Title}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">{item.Description}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">{item.Price}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">{item.Stock}</td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                        {item.Status === 1 ? 'Active' : 'Inactive'}
+                                    </td>
+                                    <td className="px-6 py-4 text-right text-sm font-medium">
+                                        <a href="#" className="text-blue-600 hover:text-blue-900 mr-5" onClick={() => handleEditGenre(item)}>Edit</a>
+                                        <a href="#" className="text-blue-600 hover:text-blue-900" onClick={() => handleDeleteGenre(item)}>Delete</a>
+                                    </td>
                                 </tr>
-                            )}
-                        </tbody>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">No games available.</td>
+                            </tr>
+                        )}
+                    </tbody>
                     </table>
                 </div>
             </div>
@@ -152,9 +158,9 @@ export default function GenreTable() {
                 activeClassName="bg-sky-400 text-white rounded-full"
                 activeLinkClassName="w-full h-full flex items-center justify-center"
             />
-            <ModalAddGenre isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} onCreateSuccess={() => getGenres(1, searchTerm)} />
-            <ModalUpdateGenre isOpen={isModalEditOpen} onClose={handleCloseModal} dataGenreEdit={dataGenre} onEditSuccess={() => getGenres(currentPage, searchTerm)}/>
-            <ModalDeleteGenre isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataGenre={dataGenre} onDeleteSuccess={() => getGenres(currentPage, searchTerm)}/>
+            <ModalAddGame isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} onCreateSuccess={() => getGames(1, searchTerm)} />
+            <ModalUpdateGame isOpen={isModalEditOpen} onClose={handleCloseModal} dataGameEdit={dataGame} onEditSuccess={() => getGames(currentPage, searchTerm)}/>
+            <ModalDeleteGame isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataGame={dataGame} onDeleteSuccess={() => getGames(currentPage, searchTerm)}/>
         </>
     );
 }

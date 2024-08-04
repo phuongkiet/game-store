@@ -26,6 +26,8 @@ namespace DataAccess.Models
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        public byte Status { get; set; }
+
         public ICollection<GameGenre> GameGenres { get; set; }
         public ICollection<GameCode> GameCodes { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }

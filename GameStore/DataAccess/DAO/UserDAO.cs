@@ -21,8 +21,8 @@ namespace DataAccess.DAO
         private readonly UserManager<User> _userManager;
 
         public UserDAO(UserManager<User> userManager) 
-        { 
-            userManager = _userManager;
+        {
+            _userManager = userManager;
         }
         public async Task<List<User>> List()
         {

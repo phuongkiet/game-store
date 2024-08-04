@@ -80,6 +80,12 @@ namespace DataAccess
             modelBuilder.Entity<GameCode>()
                 .HasIndex(gc => gc.Code)
                 .IsUnique();
+
+            modelBuilder.Entity<OrderDetail>()
+               .HasOne(od => od.GameCode)
+               .WithMany(gc => gc.OrderDetails)
+               .HasForeignKey(od => od.GameCodeId)
+               .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

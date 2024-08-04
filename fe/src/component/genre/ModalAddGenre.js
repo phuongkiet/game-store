@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createGenre } from '../services/GenreService';
+import { createGenre } from '../../services/GenreService';
 import { toast } from 'react-toastify';
 
 export default function ModalAddGenre({ isOpen, onClose, onSubmit, onCreateSuccess }) {

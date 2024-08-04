@@ -1,14 +1,15 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Header from "./component/Header";
-import Login from "./component/Login";
-import GenreTable from "./component/GenreTable";
+import Login from "./component/auth/Login";
+import GenreTable from "./component/genre/GenreTable";
 import Footer from "./component/Footer";
 import UserTable from "./component/UserTable";
 import { ToastContainer, toast } from "react-toastify";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Register from "./component/Register";
+import Register from "./component/auth/Register";
 import Home from "./component/Home";
+import GameTable from "./component/game/GameTable";
 
 function App() {
 	return (
@@ -22,6 +23,7 @@ function App() {
 						<Route path="/" element={<Home/>}/>	
 						<Route path="/Genre" element={<GenreTable />} />
 						<Route path="/User" element={<UserTable />} />
+						<Route path="/Game" element={<GameTable/>}/>
 						<Route path="/Login" element={<Login/>}/>
 						<Route path="/Register" element={<Register/>}/>
 					</Routes>
