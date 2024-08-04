@@ -8,6 +8,7 @@ import UserTable from "./component/UserTable";
 import { ToastContainer, toast } from "react-toastify";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Register from "./component/Register";
+import Home from "./component/Home";
 
 function App() {
 	return (
@@ -18,6 +19,7 @@ function App() {
 				</header>
 				<body className="mb-10">	
 					<Routes>
+						<Route path="/" element={<Home/>}/>	
 						<Route path="/Genre" element={<GenreTable />} />
 						<Route path="/User" element={<UserTable />} />
 						<Route path="/Login" element={<Login/>}/>
