@@ -1,11 +1,13 @@
 ﻿using DataAccess.Models;
 using DataTransferObject;
 using DataTransferObject.Game.Request;
+using DataTransferObject.Game.Response;
 using DataTransferObject.User.Request;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
 using Repository.IRepository;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Presentation.Controllers
 {
@@ -29,14 +31,27 @@ namespace Presentation.Controllers
         [HttpGet("get-games")]
         public async Task<IActionResult> GetGames(int page = 1, int pageSize = 3, string searchTerm = null)
         {
-            var data = await _gameRepository.ListGameWithPaging(page, pageSize, searchTerm);
+            var games = await _gameRepository.ListGameWithPaging(page, pageSize, searchTerm);
+
+            var gameViewModels = games.Select(game => new GameDTO
+            {
+                GameId = game.GameId,
+                Title = game.Title,
+                Description = game.Description,
+                Price = game.Price,
+                Stock = game.Stock,
+                CreatedAt = game.CreatedAt,
+                Status = game.Status,
+                ImageUrl = game.GameImage?.Url
+            }).ToList();
+
             var metadata = new
             {
-                data.TotalCount,
-                data.PageSize,
-                data.CurrentPage,
-                data.TotalPages,
-                data
+                TotalCount = games.TotalCount,
+                PageSize = games.PageSize,
+                CurrentPage = games.CurrentPage,
+                TotalPages = games.TotalPages,
+                data = gameViewModels
             };
             return Ok(metadata);
         }

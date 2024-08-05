@@ -131,27 +131,27 @@ export default function Header() {
                   
                 </Disclosure>
                 <a
-                  href="#"
+                  href="/User"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Features
+                  User
                 </a>
                 <a
-                  href="#"
+                  href="/Genre"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Marketplace
+                  Genre
                 </a>
                 <a
-                  href="#"
+                  href="/Game"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
-                  Company
+                  Game
                 </a>
               </div>
               <div className="py-6">
                 <a
-                  href="#"
+                  href="/Login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Log in

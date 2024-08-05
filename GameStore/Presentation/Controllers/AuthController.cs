@@ -51,6 +51,10 @@ namespace Presentation.Controllers
             var user = await _authRepository.Login(loginDTO);
             if (user != null)
             {
+                if(user.Status == 0)
+                {
+                    return BadRequest(new ApiResponse { Success = false, Message = "Your account is unavailable" });
+                }
                 var token = await _authRepository.GenerateTokenString(user);
                 var userData = new UserDTO
                 {
@@ -67,7 +71,7 @@ namespace Presentation.Controllers
                 return Ok(new
                 {
                     UserData = userData,
-                    Response = new ApiResponse
+                    data = new ApiResponse
                     {
                         Success = true,
                         Message = "Logged in successfully"
