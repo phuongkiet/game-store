@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchAllGame } from '../services/GameService';
+import { fetchAllGameHome } from '../services/GameService';
 
 export default function Home() {
     const [listGames, setListGames] = useState([]);
@@ -14,7 +14,7 @@ export default function Home() {
 
     const getGames = async (page, searchTerm) => {
         try {
-            let res = await fetchAllGame(page, searchTerm);
+            let res = await fetchAllGameHome(page, searchTerm);
             console.log(">>> check res: ", res);
             if (res && res.data) {
                 setTotalGames(res.TotalCount);

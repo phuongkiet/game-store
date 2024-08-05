@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CloudinaryDotNet.Actions;
+using CloudinaryDotNet;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Services.Interfaces;
 using System.Net;
@@ -14,18 +16,41 @@ namespace Presentation.Controllers
         {
             _cloudinaryService = cloudinaryService;
         }
+
         [HttpPost]
         public async Task<IActionResult> UploadAsync(IFormFile file)
         {
-            var result = await _cloudinaryService.UploadAsync(file);
-            if (result == null)
+            if (file == null || file.Length == 0)
             {
-                ModelState.AddModelError("Upload image", " Something went wrong");
+                return BadRequest("No file uploaded.");
+            }
+
+            var transformation = new Transformation()
+                .AspectRatio("1:1")
+                .Crop("fill")
+                .FetchFormat("auto")
+                .Effect("gen_fill");
+
+            var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(file.FileName, file.OpenReadStream()),
+                Transformation = transformation,
+                DisplayName = file.FileName,
+                Folder = "asp-net7"
+            };
+
+            var result = await _cloudinaryService.UploadAsync(uploadParams);
+
+            if (result == null || result.StatusCode != HttpStatusCode.OK)
+            {
+                ModelState.AddModelError("Upload image", "Something went wrong");
                 return Problem("Something went wrong", null, (int)HttpStatusCode.InternalServerError);
             }
-            return Ok(new { link = result.SecureUri.AbsoluteUri, publicId = result.PublicId });
 
+            return Ok(new { link = result.SecureUri.AbsoluteUri, publicId = result.PublicId });
         }
+
+
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(string publicId)
         {

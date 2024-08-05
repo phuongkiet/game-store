@@ -5,6 +5,6 @@ namespace Presentation.Services.Interfaces
     public interface ICloudinaryService
     {
         Task<DeletionResult> DeletePhotoAsync(string publicId);
-        Task<ImageUploadResult> UploadAsync(IFormFile file);
+        Task<ImageUploadResult> UploadAsync(ImageUploadParams uploadParams);
     }
 }
