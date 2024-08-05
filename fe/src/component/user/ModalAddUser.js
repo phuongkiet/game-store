@@ -44,7 +44,7 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 						<form onSubmit={onSubmit} className="space-y-6">
 							<div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
 								<div className="sm:flex sm:items-start">
-									<div className="mt-3 text-center sm:mt-0 sm:text-left">
+									<div className="mt-3 text-center w-full sm:text-left">
 										<h3 className="text-lg font-medium leading-6 text-gray-900" id="modal-title">
 											Add New User
 										</h3>
@@ -95,7 +95,7 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 													<input
 														id="PhoneNumber"
 														name="PhoneNumber"
-														value={Email}
+														value={PhoneNumber}
 														onChange={(event) => setPhoneNumber(event.target.value)}
 														type="text"
 														required
@@ -114,9 +114,9 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 													<input
 														id="Brithday"
 														name="Brithday"
-														value={Email}
+														value={Birthday}
 														onChange={(event) => setBirthday(event.target.value)}
-														type="text"
+														type="date"
 														required
 														autoComplete="text"
 														className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
