@@ -24,6 +24,7 @@ namespace DataAccess
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<GameImage> GameImages { get; set; }
+        public DbSet<GameVideo> GameVideos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

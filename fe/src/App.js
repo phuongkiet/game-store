@@ -4,7 +4,7 @@ import Header from "./component/Header";
 import Login from "./component/auth/Login";
 import GenreTable from "./component/genre/GenreTable";
 import Footer from "./component/Footer";
-import UserTable from "./component/UserTable";
+import UserTable from "./component/user/UserTable";
 import { ToastContainer, toast } from "react-toastify";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Register from "./component/auth/Register";
@@ -18,18 +18,18 @@ function App() {
 				<header>
 					<Header />
 				</header>
-				<body className="mb-10">	
+				<body className="mb-10">
 					<Routes>
-						<Route path="/" element={<Home/>}/>	
+						<Route path="/" element={<Home />} />
 						<Route path="/Genre" element={<GenreTable />} />
 						<Route path="/User" element={<UserTable />} />
-						<Route path="/Game" element={<GameTable/>}/>
-						<Route path="/Login" element={<Login/>}/>
-						<Route path="/Register" element={<Register/>}/>
+						<Route path="/Game" element={<GameTable />} />
+						<Route path="/Login" element={<Login />} />
+						<Route path="/Register" element={<Register />} />
 					</Routes>
 				</body>
 				<footer>
-					<Footer/>
+					<Footer />
 				</footer>
 			</div>
 			<ToastContainer

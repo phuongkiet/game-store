@@ -28,6 +28,7 @@ namespace DataAccess.Models
 
         public byte Status { get; set; }
         public GameImage GameImage { get; set; }
+        public GameVideo GameVideo { get; set; }
         public ICollection<GameGenre> GameGenres { get; set; }
         public ICollection<GameCode> GameCodes { get; set; }
         public ICollection<OrderDetail> OrderDetails { get; set; }
