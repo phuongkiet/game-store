@@ -10,6 +10,10 @@ export default function ModalAddGenre({ isOpen, onClose, onSubmit, onCreateSucce
 
   const handleSaveGenre = async () => {
     try {
+      if(!GenreName){
+        toast.error("Error when creating genre!"); 
+        return;
+      }
       let res = await createGenre(GenreId, GenreName);  
       if (res && res.Success === true) {
         onClose(); 

@@ -23,6 +23,7 @@ namespace DataAccess
         public DbSet<GameGenre> GameGenres { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<GameImage> GameImages { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

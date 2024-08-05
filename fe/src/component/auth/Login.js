@@ -22,13 +22,15 @@ export default function Login() {
       toast.error("Email and Password must not be empty");
       return;
     }
-    console.log(">>> check email:", email, " password:", password)
     let res = await AuthService.login(email, password);
     console.log(">>> check res: ", res);
-    if(res.Response.Success == true){
+    if(res.data.Success == true){
       localStorage.setItem("token", res.UserData.Token);
+      localStorage.setItem("user", JSON.stringify(res.UserData));
       toast.success("Login success");
-      navigate("/Genre");
+      navigate("/Home");
+    }else if(res.data.Success == false){
+      toast.error(res.data.Message);
     }
   }
 

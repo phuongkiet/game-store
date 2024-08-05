@@ -1,107 +1,135 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchAllGame } from '../services/GameService';
 
 export default function Home() {
+    const [listGames, setListGames] = useState([]);
+    const [totalGames, setTotalGames] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState("");
+
+    useEffect(() => {
+      getGames(currentPage, searchTerm);
+    }, [currentPage]);
+
+    const getGames = async (page, searchTerm) => {
+        try {
+            let res = await fetchAllGame(page, searchTerm);
+            console.log(">>> check res: ", res);
+            if (res && res.data) {
+                setTotalGames(res.TotalCount);
+                setListGames(res.data);
+                setTotalPages(res.TotalPages);
+            }
+        } catch (error) {
+            console.error("Error fetching genres:", error);
+        }
+    };
   return (
     <div className="bg-gray-100">
-      <section
-        className="bg-cover bg-center h-screen relative"
-        style={{ backgroundImage: "url('https://via.placeholder.com/1920x800')" }}
-      >
-        <div className="absolute inset-0 bg-black opacity-50"></div>
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
-          <h1 className="text-4xl font-bold mb-4">Welcome to Our Store</h1>
-          <p className="text-lg mb-8">Find the best deals on games and gift cards</p>
-          <a href="#" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Shop Now
-          </a>
+      
+      {/* Navigation Bar */}
+      <nav className="bg-gray-50 border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex space-x-4 py-2">
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Giải trí</a>
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Làm việc</a>
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Học tập</a>
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Game Steam</a>
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Edit Ảnh - Video</a>
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Window, Office</a>
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Google Drive</a>
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Tiktok</a>
+          <a href="#" className="text-sm text-gray-700 hover:text-blue-600">Diệt Virus</a>
+        </div>
+      </nav>
+
+      {/* Main Banner */}
+      <section className="relative bg-gray-100">
+        <img
+          src="https://via.placeholder.com/1920x400"
+          alt="Main Banner"
+          className="w-full h-96 object-cover"
+        />
+        <div className="absolute inset-0 bg-black opacity-40"></div>
+        <div className="absolute inset-0 flex items-center justify-center text-center text-white">
+          <div>
+            <h1 className="text-4xl font-bold mb-4">YouTube Premium</h1>
+            <p className="text-lg mb-4">Chỉ từ 29K/THÁNG</p>
+            <a href="#" className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+              Get Started
+            </a>
+          </div>
         </div>
       </section>
 
-      <section className="py-12 bg-white">
+      {/* Featured Products */}
+      <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold mb-8">Browse Categories</h2>
+        <div className='flex justify-between'>
+            <h2 className="text-2xl font-bold mb-6">Featured Products</h2>
+            <a href='#' className='text-blue-600 hover:text-blue-900 mr-5 font-semibold'>See more</a>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {['Category 1', 'Category 2', 'Category 3', 'Category 4'].map((category, index) => (
-              <div key={index} className="flex flex-col items-center">
-                <img src="https://via.placeholder.com/150" alt={category} className="w-24 h-24 mb-4" />
-                <a href="#" className="text-lg font-semibold">{category}</a>
+            {listGames && listGames.length > 0 ? ( listGames.map((games, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow-md text-center">
+                <img
+                  src={games.ImageUrl}
+                  alt={games.Title}
+                  className="w-full mb-4"
+                />
+                <h3 className="text-lg font-semibold mb-2">{games.Title}</h3>
+                <div className="text-red-600 font-bold mb-2">${games.Price}</div>
               </div>
+            ))) : (
+              <tr>
+                  <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">No games available.</td>
+              </tr>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Popular Keywords */}
+      <section className="py-4 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-xl font-bold mb-4">Popular Keywords</h2>
+          <div className="flex flex-wrap space-x-2">
+            {['Làm việc', 'Giải trí', 'Học tập', 'Spotify', 'Wallet', 'Youtube'].map((keyword, index) => (
+              <a
+                key={index}
+                href="#"
+                className="bg-blue-100 text-blue-600 text-sm font-semibold px-3 py-1.5 rounded mb-2 hover:bg-blue-200"
+              >
+                {keyword}
+              </a>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-12 bg-gray-50">
+      {/* Products */}
+      <section className="py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold mb-8">Featured Products</h2>
+          <div className='flex justify-between'>
+            <h2 className="text-2xl font-bold mb-6">Well-known Steam Game</h2>
+            <a href='#' className='text-blue-600 hover:text-blue-900 mr-5 font-semibold'>See more</a>
+          </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {['Product 1', 'Product 2', 'Product 3', 'Product 4'].map((product, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow-md">
-                <img src="https://via.placeholder.com/200" alt={product} className="w-full mb-4" />
-                <h3 className="text-lg font-semibold mb-2">{product}</h3>
-                <p className="text-gray-700 mb-4">$19.99</p>
-                <a href="#" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  Buy Now
-                </a>
+          {listGames && listGames.length > 0 ? ( listGames.map((games, index) => (
+              <div key={index} className="bg-white p-4 rounded-lg shadow-md text-center">
+                <img
+                  src={games.ImageUrl}
+                  alt={games.Title}
+                  className="w-full mb-4"
+                />
+                <h3 className="text-lg font-semibold mb-2">{games.Title}</h3>
+                <div className="text-red-600 font-bold mb-2">${games.Price}</div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold mb-8">New Arrivals</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {['New Arrival 1', 'New Arrival 2', 'New Arrival 3', 'New Arrival 4'].map((arrival, index) => (
-              <div key={index} className="bg-white p-4 rounded-lg shadow-md">
-                <img src="https://via.placeholder.com/200" alt={arrival} className="w-full mb-4" />
-                <h3 className="text-lg font-semibold mb-2">{arrival}</h3>
-                <p className="text-gray-700 mb-4">$19.99</p>
-                <a href="#" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  Buy Now
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold mb-8">Special Promotions</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { title: 'Discount Bundle', description: 'Get 20% off on selected games and gift cards. Limited time offer!' },
-              { title: 'Buy One Get One Free', description: "Purchase a game and get another one for free. Don't miss out!" },
-              { title: 'Exclusive Member Deals', description: 'Join our membership and unlock exclusive discounts and rewards.' },
-            ].map((promo, index) => (
-              <div key={index} className="bg-yellow-100 p-6 rounded-lg text-center">
-                <h3 className="text-xl font-semibold mb-4">{promo.title}</h3>
-                <p className="text-gray-700 mb-6">{promo.description}</p>
-                <a href="#" className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
-                  {promo.title === 'Exclusive Member Deals' ? 'Join Now' : 'Shop Now'}
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold mb-8">What Our Customers Say</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              { quote: "Great service and amazing deals. I always find what I'm looking for!", name: 'Customer 1' },
-              { quote: 'Fast delivery and excellent customer support. Highly recommend!', name: 'Customer 2' },
-              { quote: 'Best prices on games and gift cards. I always check here first!', name: 'Customer 3' },
-            ].map((testimonial, index) => (
-              <div key={index} className="bg-gray-100 p-6 rounded-lg">
-                <p className="text-gray-700 mb-4">"{testimonial.quote}"</p>
-                <h3 className="text-lg font-semibold">- {testimonial.name}</h3>
-              </div>
-            ))}
+            ))) : (
+              <tr>
+                  <td colSpan="7" className="px-6 py-4 text-center text-sm text-gray-500">No games available.</td>
+              </tr>
+            )}
           </div>
         </div>
       </section>
