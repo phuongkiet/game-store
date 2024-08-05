@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {toast} from 'react-toastify';
 import AuthService from '../../services/AuthService';
 import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../context/UserContext';
 
 export default function Login() {
+
+  const { login } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -13,7 +16,7 @@ export default function Login() {
   useEffect(() => {
     let token = localStorage.getItem("token");
     if(token){
-      navigate("/Genre");
+      navigate("/");
     }
   }, [])
 
@@ -25,10 +28,9 @@ export default function Login() {
     let res = await AuthService.login(email, password);
     console.log(">>> check res: ", res);
     if(res.data.Success == true){
-      localStorage.setItem("token", res.UserData.Token);
-      localStorage.setItem("user", JSON.stringify(res.UserData));
+      login(res.UserData, res.UserData.Token);
       toast.success("Login success");
-      navigate("/Home");
+      navigate("/");
     }else if(res.data.Success == false){
       toast.error(res.data.Message);
     }
