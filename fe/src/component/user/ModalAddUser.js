@@ -89,14 +89,33 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 										<div className="mt-2">
 											<div>
 												<label htmlFor="genreName" className="block text-sm font-medium leading-6 text-gray-900">
-													User Email
+													User PhoneNumber
 												</label>
 												<div className="mt-2">
 													<input
-														id="Email"
-														name="Email"
+														id="PhoneNumber"
+														name="PhoneNumber"
 														value={Email}
-														onChange={(event) => setEmail(event.target.value)}
+														onChange={(event) => setPhoneNumber(event.target.value)}
+														type="text"
+														required
+														autoComplete="text"
+														className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
+													/>
+												</div>
+											</div>
+										</div>
+										<div className="mt-2">
+											<div>
+												<label htmlFor="genreName" className="block text-sm font-medium leading-6 text-gray-900">
+													User Birthday
+												</label>
+												<div className="mt-2">
+													<input
+														id="Brithday"
+														name="Brithday"
+														value={Email}
+														onChange={(event) => setBirthday(event.target.value)}
 														type="text"
 														required
 														autoComplete="text"

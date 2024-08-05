@@ -9,6 +9,9 @@
     "GameImage": {
       "Url": "https://res.cloudinary.com/dywenepi7/image/upload/v1722824610/DarkSoul_nrncvl.jpg",
       "IsMain": true
+    },
+    "GameVideo": {
+      "EmbedId": "Woe0PYZPxRw"
     }
   },
   {
@@ -21,6 +24,9 @@
     "GameImage": {
       "Url": "https://res.cloudinary.com/dywenepi7/image/upload/v1722824532/DarkSouls2_bv3aot.jpg",
       "IsMain": true
+    },
+    "GameVideo": {
+      "EmbedId": "k-dcwB3qTMA"
     }
   },
   {
@@ -33,6 +39,9 @@
     "GameImage": {
       "Url": "https://res.cloudinary.com/dywenepi7/image/upload/v1722822256/DarkSouls3_if7dri.jpg",
       "IsMain": true
+    },
+    "GameVideo": {
+      "EmbedId": "cWBwFhUv1-8"
     }
   },
   {
@@ -45,6 +54,9 @@
     "GameImage": {
       "Url": "https://res.cloudinary.com/dywenepi7/image/upload/v1722822062/EldenRing_qlzo0f.jpg",
       "IsMain": true
+    },
+    "GameVideo": {
+      "EmbedId": "K_03kFqWfqs"
     }
   },
   {
@@ -57,6 +69,9 @@
     "GameImage": {
       "Url": "https://res.cloudinary.com/dywenepi7/image/upload/v1722824358/Sekiro_fulayq.jpg",
       "IsMain": true
+    },
+    "GameVideo": {
+      "EmbedId": "rXMX4YJ7Lks"
     }
   }
 ]
