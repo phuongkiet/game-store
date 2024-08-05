@@ -9,25 +9,20 @@ namespace Presentation.Services
     public class CloudinaryService : ICloudinaryService
     {
         private readonly Cloudinary _cloudinary;
+
         public CloudinaryService(IOptions<CloudinarySettings> config)
         {
             var account = new Account(
                 config.Value.CloudName,
                 config.Value.ApiKey,
                 config.Value.ApiSecret
-                );
+            );
             _cloudinary = new Cloudinary(account);
         }
-        public async Task<ImageUploadResult> UploadAsync(IFormFile file)
+
+        public async Task<ImageUploadResult> UploadAsync(ImageUploadParams uploadParams)
         {
-            var result = await _cloudinary.UploadAsync(
-                new ImageUploadParams()
-                {
-                    File = new FileDescription(file.FileName, file.OpenReadStream()),
-                    DisplayName = file.FileName,
-                    Folder = "asp-net7"
-                }
-                );
+            var result = await _cloudinary.UploadAsync(uploadParams);
             if (result != null && result.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 return result;

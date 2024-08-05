@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { createGame } from '../../services/GameService';
+import { uploadImage } from "../../services/ImageService";
 
 export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSuccess }) {
   const [GameId, setGameId] = useState(0);
@@ -8,14 +9,36 @@ export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSucces
   const [Description, setDescription] = useState("");
   const [Price, setPrice] = useState(0.0);
   const [Stock, setStock] = useState(0);
+  const [ImageFile, setImageFile] = useState(null);
+  const [ImagePreview, setImagePreview] = useState(null);
 
   if (!isOpen) return null;
 
+  const handleFileChange = (event) => {
+  const file = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    } else {
+      setImageFile(null);
+      setImagePreview(null);
+    }
+  };
+
   const handleSaveGame = async () => {
+    if (!ImageFile) {
+      toast.error("Please select an image!");
+      return;
+    }
+
     try {
-      let res = await createGame(Title, Price, Stock, Description);  
-      console.log("Title:", Title, "Des:", Description,"Price:",Price,"Stock:",Stock);
-      console.log(">>> check res: ", res);
+      const imageUploadResponse = await uploadImage(ImageFile);
+      console.log(">> check res: ", imageUploadResponse);
+      const { link } = imageUploadResponse;     
+      console.log(">> check link: ", link); 
+      // Create game with uploaded image link
+      const res = await createGame(Title, Price, Stock, Description, link);
+
       if (res && res.Success === true) {
         onClose(); 
         setGameId(0); 
@@ -23,15 +46,17 @@ export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSucces
         setDescription(""); 
         setPrice(0); 
         setStock(0); 
+        setImageFile(null);
         toast.success("Game created successfully!");
         onCreateSuccess();
-      } else if (res && (res.Success === false)) {
-        toast.error("Error when creating genre!"); 
-        onClose(); 
+      } else {
+        toast.error("Error when creating game!");
       }
     } catch (error) {
-      toast.error("An unexpected error occurred!"); 
-      onClose(); 
+      toast.error("An unexpected error occurred!");
+      console.error("Upload error: ", error);
+    } finally {
+      onClose();
     }
   };
 
@@ -129,6 +154,33 @@ export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSucces
                               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
                             />
                           </div>
+                        </div>
+                        <div>
+                          <label
+                            htmlFor="image"
+                            className="block text-sm font-medium leading-6 text-gray-900"
+                          >
+                            Image
+                          </label>
+                          <div className="mt-2">
+                            <input
+                              id="image"
+                              name="image"
+                              type="file"
+                              accept="image/*"
+                              onChange={handleFileChange}
+                              required
+                              className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-4">
+                          {ImagePreview && (
+                            <div>
+                              <label className="block text-sm font-medium leading-6 text-gray-900">Image Preview</label>
+                              <img src={ImagePreview} alt="Image Preview" className="mt-2 rounded-md shadow-sm" />
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>

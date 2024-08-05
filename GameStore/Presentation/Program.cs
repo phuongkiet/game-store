@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Presentation.Helpers;
+using Presentation.Services;
+using Presentation.Services.Interfaces;
 using Repository;
 using Repository.IRepository;
 using System.Text;
@@ -95,6 +98,10 @@ builder.Services.AddIdentityCore<User>(opt =>
     .AddEntityFrameworkStores<GameStoreDbContext>()
     .AddSignInManager<SignInManager<User>>()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+//Cloudinary
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 //Auth
 builder.Services.AddScoped<AuthDAO>();
