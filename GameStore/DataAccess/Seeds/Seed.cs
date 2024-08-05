@@ -79,7 +79,8 @@ namespace DataAccess.Seeds
                 new Genre {GenreName="Simulation"},
                 new Genre {GenreName="Horror"},
                 new Genre {GenreName="Indie"},
-                new Genre {GenreName="Strategy"}
+                new Genre {GenreName="Strategy"},
+                new Genre {GenreName="Turn-Based"}
             };
 
             foreach (var i in list)

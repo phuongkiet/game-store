@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllUser, fetchAllUsers } from "../services/UserService";
+import { fetchAllUser, fetchAllUsers } from "../../services/UserService";
 import ReactPaginate from "react-paginate";
 import { FaTrashAlt } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
-// import ModalAddUser from './ModalAddUser';
+import ModalAddUser from "./ModalAddUser";
 // import ModalUpdateUser from './ModalUpdateUser';
 // import ModalDeleteUser from './ModalDeleteUser';
 
@@ -144,8 +144,13 @@ export default function UserTable() {
 				activeClassName="bg-sky-400 text-white rounded-full"
 				activeLinkClassName="w-full h-full flex items-center justify-center"
 			/>
-			{/* <ModalAddUser isOpen={isModalOpen} onClose={handleCloseModal} onSubmit={handleSubmit} onCreateSuccess={() => getUsers(1)} />
-            <ModalUpdateUser isOpen={isModalEditOpen} onClose={handleCloseModal} dataUserEdit={dataUser} onEditSuccess={() => getUsers(currentPage)}/>
+			<ModalAddUser
+				isOpen={isModalOpen}
+				onClose={handleCloseModal}
+				onSubmit={handleSubmit}
+				onCreateSuccess={() => getUsers(1)}
+			/>
+			{/* <ModalUpdateUser isOpen={isModalEditOpen} onClose={handleCloseModal} dataUserEdit={dataUser} onEditSuccess={() => getUsers(currentPage)}/>
             <ModalDeleteUser isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataUser={dataUser} onDeleteSuccess={() => getUsers(currentPage)}/> */}
 		</>
 	);
