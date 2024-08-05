@@ -1,24 +1,32 @@
 import React, { useState } from "react";
-import { createGenre } from "../../services/GenreService";
+import { createUser } from "../../services/UserService";
 import { toast } from "react-toastify";
 
-export default function ModalAddGenre({ isOpen, onClose, onSubmit, onCreateSuccess }) {
-	const [GenreId, setGenreId] = useState(0);
-	const [GenreName, setGenreName] = useState("");
+export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSuccess }) {
+	const [UserId, setUserId] = useState(0);
+	const [Name, setName] = useState("");
+	const [Birthday, setBirthday] = useState("");
+	const [Email, setEmail] = useState("");
+	const [PhoneNumber, setPhoneNumber] = useState("");
+	const [Money, setMoney] = useState(0);
 
 	if (!isOpen) return null;
 
-	const handleSaveGenre = async () => {
+	const handleSaveUser = async () => {
 		try {
-			let res = await createGenre(GenreId, GenreName);
+			let res = await createUser(UserId, Name, Birthday, Money, Email, PhoneNumber);
 			if (res && res.Success === true) {
 				onClose();
-				setGenreId(0);
-				setGenreName("");
-				toast.success("Genre created successfully!");
+				setUserId(0);
+				setName("");
+				setBirthday("");
+				setEmail("");
+				setPhoneNumber("");
+				setMoney(0);
+				toast.success("User created successfully!");
 				onCreateSuccess();
 			} else if (res && res.Success === false) {
-				toast.error("Error when creating genre!");
+				toast.error("Error when creating user!");
 				onClose();
 			}
 		} catch (error) {
@@ -38,19 +46,57 @@ export default function ModalAddGenre({ isOpen, onClose, onSubmit, onCreateSucce
 								<div className="sm:flex sm:items-start">
 									<div className="mt-3 text-center sm:mt-0 sm:text-left">
 										<h3 className="text-lg font-medium leading-6 text-gray-900" id="modal-title">
-											Add New Genre
+											Add New User
 										</h3>
 										<div className="mt-2">
 											<div>
 												<label htmlFor="genreName" className="block text-sm font-medium leading-6 text-gray-900">
-													Genre Name
+													User Name
 												</label>
 												<div className="mt-2">
 													<input
-														id="genreName"
-														name="genreName"
-														value={GenreName}
-														onChange={(event) => setGenreName(event.target.value)}
+														id="UserName"
+														name="UserName"
+														value={Name}
+														onChange={(event) => setName(event.target.value)}
+														type="text"
+														required
+														autoComplete="text"
+														className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
+													/>
+												</div>
+											</div>
+										</div>
+										<div className="mt-2">
+											<div>
+												<label htmlFor="genreName" className="block text-sm font-medium leading-6 text-gray-900">
+													User Email
+												</label>
+												<div className="mt-2">
+													<input
+														id="Email"
+														name="Email"
+														value={Email}
+														onChange={(event) => setEmail(event.target.value)}
+														type="text"
+														required
+														autoComplete="text"
+														className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
+													/>
+												</div>
+											</div>
+										</div>
+										<div className="mt-2">
+											<div>
+												<label htmlFor="genreName" className="block text-sm font-medium leading-6 text-gray-900">
+													User Email
+												</label>
+												<div className="mt-2">
+													<input
+														id="Email"
+														name="Email"
+														value={Email}
+														onChange={(event) => setEmail(event.target.value)}
 														type="text"
 														required
 														autoComplete="text"
@@ -65,7 +111,7 @@ export default function ModalAddGenre({ isOpen, onClose, onSubmit, onCreateSucce
 							<div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
 								<button
 									type="submit"
-									onClick={handleSaveGenre}
+									onClick={handleSaveUser}
 									className="flex w-full justify-center rounded-md bg-sky-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 sm:ml-3 sm:w-auto"
 								>
 									Create
