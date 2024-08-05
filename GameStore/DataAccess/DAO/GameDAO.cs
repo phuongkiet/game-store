@@ -31,7 +31,7 @@ namespace DataAccess.DAO
             try
             {
                 var context = new GameStoreDbContext();
-                query = context.Games.AsQueryable();
+                query = context.Games.Include(c => c.GameImage).AsQueryable();
 
                 if (!string.IsNullOrEmpty(SreachTerm))
                 {
