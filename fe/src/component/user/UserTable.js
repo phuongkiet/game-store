@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { fetchAllUser, fetchAllUsers } from "../../services/UserService";
+import React, { useContext, useEffect, useState } from "react";
+import { fetchAllUsers } from "../../services/UserService";
 import ReactPaginate from "react-paginate";
 import { FaTrashAlt } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
 import ModalAddUser from "./ModalAddUser";
+import { UserContext } from "../../context/UserContext";
+import Unathorize from "../auth/Unathorize";
 // import ModalUpdateUser from './ModalUpdateUser';
 // import ModalDeleteUser from './ModalDeleteUser';
 
@@ -16,14 +18,16 @@ export default function UserTable() {
 	const [isModalEditOpen, setIsModalEditOpen] = useState(false);
 	const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
 	const [dataUser, setDataUser] = useState({});
+	const [searchTerm, setSearchTerm] = useState("");
+	const { user } = useContext(UserContext);
 
 	useEffect(() => {
 		getUsers(currentPage);
 	}, [currentPage]);
 
-	const getUsers = async (page) => {
+	const getUsers = async (page, searchTerm) => {
 		try {
-			let res = await fetchAllUsers(page);
+			let res = await fetchAllUsers(page, searchTerm);
 			if (res && res.data) {
 				setTotalUsers(res.TotalCount);
 				setListUsers(res.data);
@@ -69,6 +73,15 @@ export default function UserTable() {
 		setIsModalDeleteOpen(true);
 	};
 
+	const handleSearch = (event) => {
+		let term = event.target.value;
+		if (term) {
+			getUsers(currentPage, term);
+		} else {
+			getUsers(currentPage, searchTerm);
+		}
+	};
+
 	return (
 		<>
 			<div className="p-4">
@@ -80,6 +93,16 @@ export default function UserTable() {
 					<button onClick={handleAddNewUser} className="bg-sky-400 text-white px-4 py-2 rounded-md">
 						Add new User
 					</button>
+				</div>
+				<div className="flex justify-start mt-4 mb-4">
+					<input
+						id="searchTerm"
+						name="searchTerm"
+						type="text"
+						placeholder="Search User here..."
+						onChange={(event) => handleSearch(event)}
+						className="block w-60 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
+					/>
 				</div>
 				<div className="overflow-x-auto">
 					<table className="min-w-full bg-white border border-gray-200">

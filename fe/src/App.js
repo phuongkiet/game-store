@@ -1,51 +1,101 @@
 import logo from "./logo.svg";
 import "./App.css";
+import { ToastContainer, toast } from "react-toastify";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { UserContext } from "./context/UserContext";
+
 import Header from "./component/Header";
 import Login from "./component/auth/Login";
 import GenreTable from "./component/genre/GenreTable";
 import Footer from "./component/Footer";
 import UserTable from "./component/user/UserTable";
-import { ToastContainer, toast } from "react-toastify";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Register from "./component/auth/Register";
 import Home from "./component/Home";
 import GameTable from "./component/game/GameTable";
-import { useContext, useEffect } from "react";
-import { UserContext } from "./context/UserContext";
 
+import Admin from "./component/Admin";
+import Client from "./component/Client";
 function App() {
-
 	const { user, login } = useContext(UserContext);
 
 	console.log(">> check user: ", user);
 
 	useEffect(() => {
-		if(localStorage.getItem("token")){
+		if (localStorage.getItem("token")) {
 			login(localStorage.getItem("token"));
 		}
-	}, [])
+	}, []);
 
 	return (
 		<BrowserRouter>
 			<div className="container mx-auto">
-				<header>
+				{/* <header>
 					<Header />
-				</header>
+				</header> */}
 				<body className="mb-10">
 					<Routes>
-						<Route path="/" element={<Home/>}/>	
-						<Route path="/Home" element={<Home/>}/>	
-						<Route path="/Genre" element={<GenreTable />} />
-						<Route path="/User" element={<UserTable />} />
-						<Route path="/Game" element={<GameTable />} />
-						<Route path="/Login" element={<Login />} />
-						<Route path="/Register" element={<Register />} />
-						
+						<Route
+							path="/"
+							element={
+								<Client>
+									<Home />
+								</Client>
+							}
+						/>
+						<Route
+							path="/Home"
+							element={
+								<Client>
+									<Home />
+								</Client>
+							}
+						/>
+						<Route
+							path="/admin/Genre"
+							element={
+								<Admin>
+									<GenreTable />
+								</Admin>
+							}
+						/>
+						<Route
+							path="/admin/User"
+							element={
+								<Admin>
+									<UserTable />
+								</Admin>
+							}
+						/>
+						<Route
+							path="/admin/Game"
+							element={
+								<Admin>
+									<GameTable />
+								</Admin>
+							}
+						/>
+						<Route
+							path="/Login"
+							element={
+								<Client>
+									<Login />
+								</Client>
+							}
+						/>
+						<Route
+							path="/Register"
+							element={
+								<Client>
+									<Register />
+								</Client>
+							}
+						/>
 					</Routes>
 				</body>
-				<footer>
+				{/* <footer>
 					<Footer />
-				</footer>
+				</footer> */}
 			</div>
 			<ToastContainer
 				position="top-right"

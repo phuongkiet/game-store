@@ -1,29 +1,18 @@
 import { useContext, useState } from "react";
-import {
-  Dialog,
-  DialogPanel,
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-} from "@headlessui/react";
-import {
-  Bars3Icon,
-  ChevronDownIcon,
-  XMarkIcon,
-  EllipsisVerticalIcon,
-} from "@heroicons/react/20/solid";
+import { Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { Bars3Icon, ChevronDownIcon, XMarkIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 export default function Header() {
-  const { logout, user } = useContext(UserContext);
-  const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const { logout, user } = useContext(UserContext);
+	const navigate = useNavigate();
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate("/Login");
-  };
+	const handleLogout = () => {
+		logout();
+		navigate("/Login");
+	};
 
   return (
     <header className="bg-white">
