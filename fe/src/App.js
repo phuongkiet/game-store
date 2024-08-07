@@ -10,20 +10,21 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Register from "./component/auth/Register";
 import Home from "./component/Home";
 import GameTable from "./component/game/GameTable";
+import Admin from "./component/Admin";
 import { useContext, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
+import { Switch } from "@headlessui/react";
 
 function App() {
-
 	const { user, login } = useContext(UserContext);
 
 	console.log(">> check user: ", user);
 
 	useEffect(() => {
-		if(localStorage.getItem("token")){
+		if (localStorage.getItem("token")) {
 			login(localStorage.getItem("token"));
 		}
-	}, [])
+	}, []);
 
 	return (
 		<BrowserRouter>
@@ -33,14 +34,14 @@ function App() {
 				</header>
 				<body className="mb-10">
 					<Routes>
-						<Route path="/" element={<Home/>}/>	
-						<Route path="/Home" element={<Home/>}/>	
+						<Route path="/" element={<Home />} />
+						<Route path="/Home" element={<Home />} />
+						<Route path="/Admin" Component={<Admin />} />
 						<Route path="/Genre" element={<GenreTable />} />
 						<Route path="/User" element={<UserTable />} />
 						<Route path="/Game" element={<GameTable />} />
 						<Route path="/Login" element={<Login />} />
 						<Route path="/Register" element={<Register />} />
-						
 					</Routes>
 				</body>
 				<footer>
