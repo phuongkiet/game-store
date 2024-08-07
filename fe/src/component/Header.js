@@ -72,7 +72,7 @@ export default function Header() {
                     className="h-5 w-5 text-gray-400"
                   />
                 </PopoverButton>
-                <PopoverPanel className="absolute z-10 mt-3 w-40 transform -translate-x-1/2 left-1/2">
+                <PopoverPanel className="absolute z-10 mt-3 w-full transform -translate-x-1/2 left-1/2">
                   <div className="overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5">
                     <div className="p-4">
                       <div className="flex flex-col gap-y-2">

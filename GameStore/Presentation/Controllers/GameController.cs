@@ -59,6 +59,7 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("create-game")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateGame([FromBody] CreateGame game)
         {
             try
