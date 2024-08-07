@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { createGame } from '../../services/GameService';
-import { uploadImage } from "../../services/ImageService";
+import { deleteImage, uploadImage } from "../../services/ImageService";
 
 export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSuccess }) {
   const [GameId, setGameId] = useState(0);
@@ -30,16 +30,17 @@ export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSucces
       toast.error("Please select an image!");
       return;
     }
-
+  
     try {
       const imageUploadResponse = await uploadImage(ImageFile);
-      console.log(">> check res: ", imageUploadResponse);
-      const { link } = imageUploadResponse;     
+      console.log(">> check imageUploadResponse: ", imageUploadResponse);
+      const { link, publicId } = imageUploadResponse;     
       console.log(">> check link: ", link); 
+  
       // Create game with uploaded image link
       const res = await createGame(Title, Price, Stock, Description, link);
-
-      if (res && res.Success === true) {
+  
+      if (res && res.data.Success === true) {
         onClose(); 
         setGameId(0); 
         setTitle(""); 
@@ -50,15 +51,26 @@ export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSucces
         toast.success("Game created successfully!");
         onCreateSuccess();
       } else {
-        toast.error("Error when creating game!");
+        toast.error(res.data?.Message || "Error when creating game!");
+        // Optionally, delete the uploaded image if game creation fails
+        if (publicId) {
+          await deleteImage(publicId);
+          console.log("Image deleted due to game creation error.");
+        }
       }
     } catch (error) {
-      toast.error("An unexpected error occurred!");
       console.error("Upload error: ", error);
+      if (error.response && error.response.status === 403) {
+        console.error('You do not have permission to perform this action.');
+        toast.error('You do not have permission to perform this action.');
+      } else {
+        toast.error("An unexpected error occurred!");
+      }
     } finally {
       onClose();
     }
   };
+  
 
   return (
     <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">

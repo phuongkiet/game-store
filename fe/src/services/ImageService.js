@@ -11,4 +11,8 @@ const uploadImage = (imageFile) => {
   });
 };
 
-export { uploadImage };
+const deleteImage = (publicId) => {
+  return axios.delete(`api/Image?publicId=${publicId}`);
+}
+
+export { uploadImage, deleteImage };
