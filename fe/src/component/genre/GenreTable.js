@@ -83,111 +83,105 @@ export default function GenreTable() {
 	};
 	return (
 		<>
-			{user && user.auth == false ? (
-				<Unathorize />
-			) : (
-				<div>
-					<div className="p-4">
-						<div className="flex justify-between items-center mb-4">
-							<div>
-								<h1 className="text-2xl font-bold">Genre Table</h1>
-								<p className="text-gray-500">A list of all the genres.</p>
-							</div>
-							<button onClick={handleAddNewGenre} className="bg-sky-400 text-white px-4 py-2 rounded-md">
-								Add new genre
-							</button>
-						</div>
-						<div className="flex justify-start mt-4 mb-4">
-							<input
-								id="searchTerm"
-								name="searchTerm"
-								type="text"
-								placeholder="Search Genre here..."
-								onChange={(event) => handleSearch(event)}
-								className="block w-60 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
-							/>
-						</div>
-						<div className="overflow-x-auto">
-							<table className="min-w-full bg-white border border-gray-200">
-								<thead className="bg-gray-100">
-									<tr>
-										<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Id</th>
-										<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Name</th>
-										<th className="px-6 py-3 text-right text-sm font-semibold text-gray-600">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									{listGenres && listGenres.length > 0 ? (
-										listGenres.map((item, index) => (
-											<tr key={index} className="border-t border-gray-200">
-												<td className="px-6 py-4 text-sm text-gray-900">{item.GenreId}</td>
-												<td className="px-6 py-4 text-sm text-gray-500">{item.GenreName}</td>
-												<td className="px-6 py-4 text-right text-sm font-medium">
-													<div className="flex float-right">
-														<GoPencil
-															href="#"
-															className="text-xl text-yellow-400 hover:text-yellow-200 mr-5"
-															onClick={() => handleEditGenre(item)}
-														/>
-														<FaTrashAlt
-															href="#"
-															className="text-xl text-red-400 hover:text-red-200"
-															onClick={() => handleDeleteGenre(item)}
-														/>
-													</div>
-												</td>
-											</tr>
-										))
-									) : (
-										<tr>
-											<td colSpan="3" className="px-6 py-4 text-center text-sm text-gray-500">
-												No genres available.
-											</td>
-										</tr>
-									)}
-								</tbody>
-							</table>
-						</div>
+			<div className="p-4">
+				<div className="flex justify-between items-center mb-4">
+					<div>
+						<h1 className="text-2xl font-bold">Genre Table</h1>
+						<p className="text-gray-500">A list of all the genres.</p>
 					</div>
-					<ReactPaginate
-						previousLabel={<span className="text-gray-500">← Previous</span>}
-						nextLabel={<span className="text-gray-500">Next →</span>}
-						breakLabel="..."
-						breakClassName="break-me"
-						pageCount={totalPages}
-						marginPagesDisplayed={2}
-						pageRangeDisplayed={5}
-						onPageChange={handlePageClick}
-						containerClassName="flex justify-center mt-4 space-x-2"
-						pageClassName="text-white-700 hover:bg-sky-200 rounded-full w-8 h-8 flex items-center justify-center"
-						pageLinkClassName="w-full h-full flex items-center justify-center"
-						previousClassName="flex items-center justify-center text-gray-500 px-4 py-2"
-						previousLinkClassName="w-full h-full flex items-center justify-center"
-						nextClassName="flex items-center justify-center text-gray-500 px-4 py-2"
-						nextLinkClassName="w-full h-full flex items-center justify-center"
-						activeClassName="bg-sky-400 text-white rounded-full"
-						activeLinkClassName="w-full h-full flex items-center justify-center"
-					/>
-					<ModalAddGenre
-						isOpen={isModalOpen}
-						onClose={handleCloseModal}
-						onSubmit={handleSubmit}
-						onCreateSuccess={() => getGenres(1, searchTerm)}
-					/>
-					<ModalUpdateGenre
-						isOpen={isModalEditOpen}
-						onClose={handleCloseModal}
-						dataGenreEdit={dataGenre}
-						onEditSuccess={() => getGenres(currentPage, searchTerm)}
-					/>
-					<ModalDeleteGenre
-						isOpen={isModalDeleteOpen}
-						onClose={handleCloseModal}
-						dataGenre={dataGenre}
-						onDeleteSuccess={() => getGenres(currentPage, searchTerm)}
+					<button onClick={handleAddNewGenre} className="bg-sky-400 text-white px-4 py-2 rounded-md">
+						Add new genre
+					</button>
+				</div>
+				<div className="flex justify-start mt-4 mb-4">
+					<input
+						id="searchTerm"
+						name="searchTerm"
+						type="text"
+						placeholder="Search Genre here..."
+						onChange={(event) => handleSearch(event)}
+						className="block w-60 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
 					/>
 				</div>
-			)}
+				<div className="overflow-x-auto">
+					<table className="min-w-full bg-white border border-gray-200">
+						<thead className="bg-gray-100">
+							<tr>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Id</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Name</th>
+								<th className="px-6 py-3 text-right text-sm font-semibold text-gray-600">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{listGenres && listGenres.length > 0 ? (
+								listGenres.map((item, index) => (
+									<tr key={index} className="border-t border-gray-200">
+										<td className="px-6 py-4 text-sm text-gray-900">{item.GenreId}</td>
+										<td className="px-6 py-4 text-sm text-gray-500">{item.GenreName}</td>
+										<td className="px-6 py-4 text-right text-sm font-medium">
+											<div className="flex float-right">
+												<GoPencil
+													href="#"
+													className="text-xl text-yellow-400 hover:text-yellow-200 mr-5"
+													onClick={() => handleEditGenre(item)}
+												/>
+												<FaTrashAlt
+													href="#"
+													className="text-xl text-red-400 hover:text-red-200"
+													onClick={() => handleDeleteGenre(item)}
+												/>
+											</div>
+										</td>
+									</tr>
+								))
+							) : (
+								<tr>
+									<td colSpan="3" className="px-6 py-4 text-center text-sm text-gray-500">
+										No genres available.
+									</td>
+								</tr>
+							)}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<ReactPaginate
+				previousLabel={<span className="text-gray-500">← Previous</span>}
+				nextLabel={<span className="text-gray-500">Next →</span>}
+				breakLabel="..."
+				breakClassName="break-me"
+				pageCount={totalPages}
+				marginPagesDisplayed={2}
+				pageRangeDisplayed={5}
+				onPageChange={handlePageClick}
+				containerClassName="flex justify-center mt-4 space-x-2"
+				pageClassName="text-white-700 hover:bg-sky-200 rounded-full w-8 h-8 flex items-center justify-center"
+				pageLinkClassName="w-full h-full flex items-center justify-center"
+				previousClassName="flex items-center justify-center text-gray-500 px-4 py-2"
+				previousLinkClassName="w-full h-full flex items-center justify-center"
+				nextClassName="flex items-center justify-center text-gray-500 px-4 py-2"
+				nextLinkClassName="w-full h-full flex items-center justify-center"
+				activeClassName="bg-sky-400 text-white rounded-full"
+				activeLinkClassName="w-full h-full flex items-center justify-center"
+			/>
+			<ModalAddGenre
+				isOpen={isModalOpen}
+				onClose={handleCloseModal}
+				onSubmit={handleSubmit}
+				onCreateSuccess={() => getGenres(1, searchTerm)}
+			/>
+			<ModalUpdateGenre
+				isOpen={isModalEditOpen}
+				onClose={handleCloseModal}
+				dataGenreEdit={dataGenre}
+				onEditSuccess={() => getGenres(currentPage, searchTerm)}
+			/>
+			<ModalDeleteGenre
+				isOpen={isModalDeleteOpen}
+				onClose={handleCloseModal}
+				dataGenre={dataGenre}
+				onDeleteSuccess={() => getGenres(currentPage, searchTerm)}
+			/>
 		</>
 	);
 }
