@@ -21,7 +21,7 @@ function App() {
 
 	useEffect(() => {
 		if(localStorage.getItem("token")){
-			login(JSON.parse(localStorage.getItem("user")), localStorage.getItem("token"));
+			login(localStorage.getItem("token"));
 		}
 	}, [])
 
@@ -40,6 +40,7 @@ function App() {
 						<Route path="/Game" element={<GameTable />} />
 						<Route path="/Login" element={<Login />} />
 						<Route path="/Register" element={<Register />} />
+						
 					</Routes>
 				</body>
 				<footer>

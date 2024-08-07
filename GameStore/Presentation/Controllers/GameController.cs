@@ -3,6 +3,7 @@ using DataTransferObject;
 using DataTransferObject.Game.Request;
 using DataTransferObject.Game.Response;
 using DataTransferObject.User.Request;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repository;
@@ -23,6 +24,7 @@ namespace Presentation.Controllers
         }
 
         [HttpGet("list-games")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ListGame()
         {
             return Ok(await _gameRepository.List());

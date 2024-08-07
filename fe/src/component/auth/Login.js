@@ -28,7 +28,7 @@ export default function Login() {
     let res = await AuthService.login(email, password);
     console.log(">>> check res: ", res);
     if(res.data.Success == true){
-      login(res.UserData, res.UserData.Token);
+      login(res.UserData.Token);
       toast.success("Login success");
       navigate("/");
     }else if(res.data.Success == false){
