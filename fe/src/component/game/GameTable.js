@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { fetchAllGame } from "../../services/GameService";
+import { fetchAllGameAdmin } from "../../services/GameService";
 import { FaTrashAlt } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
 import ReactPaginate from "react-paginate";
@@ -27,8 +27,7 @@ export default function GameTable() {
 
 	const getGames = async (page, searchTerm) => {
 		try {
-			let res = await fetchAllGame(page, searchTerm);
-			console.log(">>> check res: ", res);
+			let res = await fetchAllGameAdmin(page, searchTerm);
 			if (res && res.data) {
 				setTotalGames(res.TotalCount);
 				setListGames(res.data);

@@ -1,53 +1,74 @@
 import { useContext, useState } from "react";
-import { Dialog, DialogPanel, Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import { Bars3Icon, ChevronDownIcon, XMarkIcon, EllipsisVerticalIcon } from "@heroicons/react/20/solid";
+import {
+  Dialog,
+  DialogPanel,
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+} from "@headlessui/react";
+import {
+  Bars3Icon,
+  ChevronDownIcon,
+  XMarkIcon,
+  EllipsisVerticalIcon,
+} from "@heroicons/react/20/solid";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
+import { FaCartFlatbed } from "react-icons/fa6";
+import { useNotifications } from "./hook/useNotifications";
 
 export default function Header() {
-	const { logout, user } = useContext(UserContext);
-	const navigate = useNavigate();
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const notificationCount = useNotifications();
+  const { logout, user } = useContext(UserContext);
+  const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-	const handleLogout = () => {
-		logout();
-		navigate("/Login");
-	};
+  const handleLogout = () => {
+    logout();
+    navigate("/Login");
+  };
 
   return (
     <header className="bg-white">
-      <nav
-        aria-label="Global"
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
-      >
+      <div className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8">
         <div className="flex lg:flex-1">
-          <a href="/" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-            <img
-              alt="Company Logo"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              className="h-8 w-auto"
-            />
-          </a>
+          <span className="text-sm font-semibold leading-6 text-gray-900">
+            Your money, your choice!
+          </span>
         </div>
         <div className="hidden lg:flex flex-1 justify-center space-x-8">
-          <a
-            href="/User"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            User
+          <a href="#" className="text-gray-500 hover:text-gray-900">
+            <span class="[&>svg]:h-5 [&>svg]:w-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 320 512"
+              >
+                <path d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z" />
+              </svg>
+            </span>
           </a>
-          <a
-            href="/Genre"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Genre
+          <a href="#" className="text-gray-500 hover:text-gray-900">
+            <span class="[&>svg]:h-5 [&>svg]:w-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 448 512"
+              >
+                <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
+              </svg>
+            </span>
           </a>
-          <a
-            href="/Game"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Game
+          <a href="#" className="text-gray-500 hover:text-gray-900">
+            <span class="[&>svg]:h-5 [&>svg]:w-5">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 512 512"
+              >
+                <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
+              </svg>
+            </span>
           </a>
         </div>
         <div className="flex flex-1 justify-end">
@@ -93,6 +114,89 @@ export default function Header() {
               <span className="sr-only">Open options</span>
               <Bars3Icon aria-hidden="true" className="h-6 w-6" />
             </button>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <nav
+        aria-label="Global"
+        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+      >
+        <div className="flex lg:flex-1">
+          <a href="/" className="-m-1.5 p-1.5">
+            <span className="sr-only">Your Company</span>
+            <img
+              alt="Company Logo"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              className="h-10 w-auto"
+            />
+          </a>
+        </div>
+        <div className="hidden lg:flex flex-1 justify-center space-x-8">
+          <a
+            href="/User"
+            className="text-lg font-semibold leading-6 text-gray-900"
+          >
+            About Us
+          </a>
+          <a
+            href="/Genre"
+            className="text-lg font-semibold leading-6 text-gray-900"
+          >
+            Contact
+          </a>
+          <a
+            href="/Game"
+            className="text-lg font-semibold leading-6 text-gray-900"
+          >
+            Location
+          </a>
+        </div>
+        <div className="flex flex-1 justify-end">
+          <div className="relative flex">
+            <a href="/">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-9"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                />
+              </svg>
+              {notificationCount > 0 && (
+                <div className="absolute top-0 right-0 mt-[-4px] mr-[-4px] flex items-center justify-center w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full">
+                  {notificationCount}
+                </div>
+              )}
+            </a>
+          </div>
+          <div className="relative flex ml-5">
+            <a href="/Cart">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="size-9"
+                href="/"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                />
+              </svg>
+              <div className="absolute top-0 right-0 mt-[-4px] mr-[-4px] flex items-center justify-center w-6 h-6  bg-red-500 text-white text-xs font-bold rounded-full">
+                1
+              </div>
+            </a>
           </div>
         </div>
       </nav>
