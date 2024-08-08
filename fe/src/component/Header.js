@@ -18,7 +18,18 @@ import { FaCartFlatbed } from "react-icons/fa6";
 import { useNotifications } from "./hook/useNotifications";
 
 export default function Header() {
-  const notificationCount = useNotifications();
+  const {
+    notificationCount,
+    notificationMessages,
+    showAllMessages,
+    setShowAllMessages,
+    resetNotificationCount,
+  } = useNotifications();
+
+  const displayedMessages = showAllMessages
+    ? notificationMessages
+    : notificationMessages.slice(0, 5);
+
   const { logout, user } = useContext(UserContext);
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -153,8 +164,18 @@ export default function Header() {
           </a>
         </div>
         <div className="flex flex-1 justify-end">
-          <div className="relative flex">
-            <a href="/">
+          <Popover className="relative">
+            <PopoverButton
+              className="relative flex items-center"
+              onClick={() => {
+                setShowAllMessages(false);
+                resetNotificationCount();
+              }}
+              onBlur={() => {
+                resetNotificationCount();
+                setShowAllMessages(false);
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -174,8 +195,40 @@ export default function Header() {
                   {notificationCount}
                 </div>
               )}
-            </a>
-          </div>
+            </PopoverButton>
+
+            <PopoverPanel className="absolute right-0 z-10 mt-2 w-80 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Notifications
+                </h3>
+                {notificationMessages && notificationMessages.length > 0 ? (
+                  <>
+                    <ul className="mt-4 space-y-2">
+                      {displayedMessages.map((message, index) => (
+                        <li
+                          key={index}
+                          className="p-2 bg-gray-100 rounded-md shadow-sm"
+                        >
+                          {message}
+                        </li>
+                      ))}
+                    </ul>
+                    {notificationMessages.length > 5 && !showAllMessages && (
+                      <button
+                        onClick={() => setShowAllMessages(true)}
+                        className="mt-4 text-blue-500"
+                      >
+                        See more
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-gray-500">No notifications</p>
+                )}
+              </div>
+            </PopoverPanel>
+          </Popover>
           <div className="relative flex ml-5">
             <a href="/Cart">
               <svg

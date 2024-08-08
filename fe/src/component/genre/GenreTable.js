@@ -7,7 +7,6 @@ import ModalAddGenre from "./ModalAddGenre";
 import ModalUpdateGenre from "./ModalUpdateGenre";
 import ModalDeleteGenre from "./ModalDeleteGenre";
 import { UserContext } from "../../context/UserContext";
-import Unathorize from "../auth/Unathorize";
 
 export default function GenreTable() {
 	const [listGenres, setListGenres] = useState([]);

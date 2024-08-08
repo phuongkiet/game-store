@@ -3,31 +3,35 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 
 export const useNotifications = () => {
   const [notificationCount, setNotificationCount] = useState(0);
+  const [notificationMessages, setNotificationMessages] = useState([]);
+  const [showAllMessages, setShowAllMessages] = useState(false);
 
   useEffect(() => {
-    // Create a connection to the SignalR hub
     const connection = new HubConnectionBuilder()
-      .withUrl("/NotificationHub") // Replace with your actual hub URL
+      .withUrl("https://localhost:7189/NotificationHub")
       .withAutomaticReconnect()
       .build();
-
+  
     connection.start()
       .then(() => {
         console.log("Connected to SignalR hub");
-
-        // Listen for incoming notifications
+  
         connection.on("ReceiveNotification", (message) => {
-          alert(message); // Show the notification message
           setNotificationCount((prevCount) => prevCount + 1);
+          setNotificationMessages((prevMessages) => [message, ...prevMessages]);
+          console.log(message);
         });
       })
       .catch((error) => console.error("SignalR Connection Error:", error));
-
-    // Cleanup on component unmount
+  
     return () => {
       connection.stop();
     };
-  }, []);
+  }, []);  
 
-  return notificationCount;
+  const resetNotificationCount = () => {
+    setNotificationCount(0);
+  };
+
+  return { notificationCount, notificationMessages, showAllMessages, setShowAllMessages, resetNotificationCount };
 };

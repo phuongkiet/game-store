@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 const Admin = (props) => {
 	return (
-		<div className="">
+		<div className="mx-auto justify-center">
 			<header>
 				<Header />
 			</header>

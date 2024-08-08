@@ -19,6 +19,7 @@ import Client from "./component/Client";
 import GameList from "./component/GameList";
 import Checkout from "./component/form/Checkout";
 import ShoppingCart from "./component/ShoppingCart";
+import ProtectedRoute from "./component/auth/ProtectedRoute";
 function App() {
   const { user, login } = useContext(UserContext);
 
@@ -29,71 +30,79 @@ function App() {
       login(localStorage.getItem("token"));
     }
   }, []);
-
-  return (
-    <BrowserRouter>
-      <div className="container mx-auto">
-        {/* <header>
-					<Header />
-				</header> */}
-        <body className="">
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Client>
-                  <Home />
-                </Client>
-              }
-            />
-            <Route
-              path="/Home"
-              element={
-                <Client>
-                  <Home />
-                </Client>
-              }
-            />
-            <Route
-              path="/admin/Genre"
-              element={
-                <Admin>
-                  <GenreTable />
-                </Admin>
-              }
-            />
-            <Route
-              path="/admin/User"
-              element={
-                <Admin>
-                  <UserTable />
-                </Admin>
-              }
-            />
-            <Route
-              path="/admin/Game"
-              element={
-                <Admin>
-                  <GameTable />
-                </Admin>
-              }
-            />
-            <Route
-              path="/Login"
-              element={
-                <Client>
-                  <Login />
-                </Client>
-              }
-            />
-            <Route
-              path="/Register"
-              element={
-                <Client>
-                  <Register />
-                </Client>
-              }
-            />
+	return (
+		<BrowserRouter>
+			<div className="">
+				<body className="mb-10">
+					{/* Client Routes */}
+					<Routes className="mx-auto">
+						<Route
+							path="/"
+							element={
+								<Client>
+									<Home />
+								</Client>
+							}
+						/>
+						<Route
+							path="/Home"
+							element={
+								<Client>
+									<Home />
+								</Client>
+							}
+						/>
+						<Route
+							path="/Login"
+							element={
+								<Client>
+									<Login />
+								</Client>
+							}
+						/>
+						<Route
+							path="/Register"
+							element={
+								<Client>
+									<Register />
+								</Client>
+							}
+						/>
+					</Routes>
+					{/* Admin Routes */}
+					<Routes>
+						<Route
+							path="/admin/Genre"
+							element={
+								<ProtectedRoute>
+									<GenreTable />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/User"
+							element={
+								<ProtectedRoute>
+									<UserTable />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/Game"
+							element={
+								<ProtectedRoute>
+									<GameTable />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/"
+							element={
+								<ProtectedRoute>
+									<GameTable />
+								</ProtectedRoute>
+							}
+						/>
             <Route
               path="/ListGame"
               element={
@@ -118,26 +127,23 @@ function App() {
                 </Client>
               }
             />
-          </Routes>
-        </body>
-        {/* <footer>
-					<Footer />
-				</footer> */}
-      </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-      />
-    </BrowserRouter>
-  );
+					</Routes>
+				</body>
+			</div>
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="colored"
+			/>
+		</BrowserRouter>
+	);
 }
 
 export default App;
