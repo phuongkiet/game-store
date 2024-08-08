@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Presentation.Helpers;
+using Presentation.Hubs;
 using Presentation.Services;
 using Presentation.Services.Interfaces;
 using Repository;
@@ -36,7 +37,8 @@ builder.Services.AddCors(options =>
         {
             builder.WithOrigins("http://localhost:3000")
                    .AllowAnyMethod()
-                   .AllowAnyHeader();
+                   .AllowAnyHeader()
+                   .AllowCredentials();
         });
 });
 
@@ -116,6 +118,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<GameDAO>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 
+//SignalR
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -130,8 +135,8 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseMiddleware<CustomAuthorizationMiddleware>();
 app.UseAuthorization();
-
 app.MapControllers();
+app.MapHub<NotificationHub>("/NotificationHub");
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 try

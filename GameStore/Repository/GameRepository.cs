@@ -29,6 +29,11 @@ namespace Repository
             return await _gameDAO.ListGameWithPaging(page, pageSize, SearchTerm);
         }
 
+        public async Task<PagedList<Game>> ListGameWithPagingAdmin(int page, int pageSize, string SearchTerm)
+        {
+            return await _gameDAO.ListGameWithPagingAdmin(page, pageSize, SearchTerm);
+        }
+
         public async Task<Game> Get(int id)
         {
             return await _gameDAO.Get(id);

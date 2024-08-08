@@ -16,18 +16,20 @@ import GameTable from "./component/game/GameTable";
 
 import Admin from "./component/Admin";
 import Client from "./component/Client";
+import GameList from "./component/GameList";
+import Checkout from "./component/form/Checkout";
+import ShoppingCart from "./component/ShoppingCart";
 import ProtectedRoute from "./component/auth/ProtectedRoute";
 function App() {
-	const { user, login } = useContext(UserContext);
+  const { user, login } = useContext(UserContext);
 
-	console.log(">> check user: ", user);
+  console.log(">> check user: ", user);
 
-	useEffect(() => {
-		if (localStorage.getItem("token")) {
-			login(localStorage.getItem("token"));
-		}
-	}, []);
-
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      login(localStorage.getItem("token"));
+    }
+  }, []);
 	return (
 		<BrowserRouter>
 			<div className="">
@@ -101,6 +103,30 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
+            <Route
+              path="/ListGame"
+              element={
+                <Client>
+                  <GameList />
+                </Client>
+              }
+            />
+            <Route
+              path="/Checkout"
+              element={
+                <Client>
+                  <Checkout />
+                </Client>
+              }
+            />
+            <Route
+              path="/Cart"
+              element={
+                <Client>
+                  <ShoppingCart />
+                </Client>
+              }
+            />
 					</Routes>
 				</body>
 			</div>

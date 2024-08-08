@@ -6,6 +6,8 @@ using DataTransferObject.User.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Presentation.Hubs;
 using Repository;
 using Repository.IRepository;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -17,10 +19,11 @@ namespace Presentation.Controllers
     public class GameController : ControllerBase
     {
         private IGameRepository _gameRepository;
-
-        public GameController(IGameRepository gameRepository)
+        private readonly IHubContext<NotificationHub> _notificationHubContext;
+        public GameController(IGameRepository gameRepository, IHubContext<NotificationHub> notificationHubContext)
         {
             _gameRepository = gameRepository;
+            _notificationHubContext = notificationHubContext;
         }
 
         [HttpGet("list-games")]
@@ -34,6 +37,34 @@ namespace Presentation.Controllers
         public async Task<IActionResult> GetGames(int page = 1, int pageSize = 3, string searchTerm = null)
         {
             var games = await _gameRepository.ListGameWithPaging(page, pageSize, searchTerm);
+
+            var gameViewModels = games.Select(game => new GameDTO
+            {
+                GameId = game.GameId,
+                Title = game.Title,
+                Description = game.Description,
+                Price = game.Price,
+                Stock = game.Stock,
+                CreatedAt = game.CreatedAt,
+                Status = game.Status,
+                ImageUrl = game.GameImage?.Url
+            }).ToList();
+
+            var metadata = new
+            {
+                TotalCount = games.TotalCount,
+                PageSize = games.PageSize,
+                CurrentPage = games.CurrentPage,
+                TotalPages = games.TotalPages,
+                data = gameViewModels
+            };
+            return Ok(metadata);
+        }
+
+        [HttpGet("get-games-admin")]
+        public async Task<IActionResult> GetGameAdmin(int page = 1, int pageSize = 3, string searchTerm = null)
+        {
+            var games = await _gameRepository.ListGameWithPagingAdmin(page, pageSize, searchTerm);
 
             var gameViewModels = games.Select(game => new GameDTO
             {
@@ -83,6 +114,8 @@ namespace Presentation.Controllers
                 };
 
                 await _gameRepository.Create(g);
+                var message = $"A new game '{g.Title}' has been created.";
+                await _notificationHubContext.Clients.All.SendAsync("ReceiveNotification", message);
                 return Ok(new ApiResponse { Success = true, Message = "Created successfully" });
             }
             catch (Exception ex)
@@ -122,6 +155,8 @@ namespace Presentation.Controllers
                 };
 
                 await _gameRepository.Update(g);
+                var message = $"Game '{g.Title}' has been updated.";
+                await _notificationHubContext.Clients.All.SendAsync("ReceiveNotification", message);
                 return Ok(new ApiResponse { Success = true, Message = "Updated successfully" });
             }
             catch (Exception ex)
@@ -135,6 +170,7 @@ namespace Presentation.Controllers
         {
             try
             {
+                var g = await _gameRepository.Get(id);
                 //check if gmae is in use
                 if (await _gameRepository.IsGameInUse(id))
                 {
@@ -143,6 +179,8 @@ namespace Presentation.Controllers
                 else
                 {
                     await _gameRepository.Delete(id);
+                    var message = $"Game `{g.Title}` has been changed to inactive.";
+                    await _notificationHubContext.Clients.All.SendAsync("ReceiveNotification", message);
                     return Ok(new ApiResponse { Success = true, Message = "Deleted successfully." });
                 }
             }

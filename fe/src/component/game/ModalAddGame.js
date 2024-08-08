@@ -39,8 +39,9 @@ export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSucces
   
       // Create game with uploaded image link
       const res = await createGame(Title, Price, Stock, Description, link);
+      console.log(">>check res: ", res);
   
-      if (res && res.data.Success === true) {
+      if (res && res.Success === true) {
         onClose(); 
         setGameId(0); 
         setTitle(""); 
@@ -51,7 +52,7 @@ export default function ModalAddGame({ isOpen, onClose, onSubmit, onCreateSucces
         toast.success("Game created successfully!");
         onCreateSuccess();
       } else {
-        toast.error(res.data?.Message || "Error when creating game!");
+        toast.error(res?.Message || "Error when creating game!");
         // Optionally, delete the uploaded image if game creation fails
         if (publicId) {
           await deleteImage(publicId);

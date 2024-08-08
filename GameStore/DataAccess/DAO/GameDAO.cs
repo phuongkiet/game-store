@@ -31,6 +31,28 @@ namespace DataAccess.DAO
             try
             {
                 var context = new GameStoreDbContext();
+                query = context.Games.Include(c => c.GameImage).Where(p => p.Status == 1).AsQueryable();
+
+                if (!string.IsNullOrEmpty(SreachTerm))
+                {
+                    query = query.Where(p => p.Title.ToLower().Contains(SreachTerm) && p.Status == 1);
+                }
+
+                var result = await PagedList<Game>.ToPagedList(query.OrderBy(q => q.GameId), page, pageSize);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<PagedList<Game>> ListGameWithPagingAdmin(int page, int pageSize, string SreachTerm)
+        {
+            IQueryable<Game> query = null;
+            try
+            {
+                var context = new GameStoreDbContext();
                 query = context.Games.Include(c => c.GameImage).AsQueryable();
 
                 if (!string.IsNullOrEmpty(SreachTerm))
