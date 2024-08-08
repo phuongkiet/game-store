@@ -16,6 +16,7 @@ import GameTable from "./component/game/GameTable";
 
 import Admin from "./component/Admin";
 import Client from "./component/Client";
+import ProtectedRoute from "./component/auth/ProtectedRoute";
 function App() {
 	const { user, login } = useContext(UserContext);
 
@@ -29,12 +30,10 @@ function App() {
 
 	return (
 		<BrowserRouter>
-			<div className="container mx-auto">
-				{/* <header>
-					<Header />
-				</header> */}
+			<div className="">
 				<body className="mb-10">
-					<Routes>
+					{/* Client Routes */}
+					<Routes className="mx-auto">
 						<Route
 							path="/"
 							element={
@@ -49,30 +48,6 @@ function App() {
 								<Client>
 									<Home />
 								</Client>
-							}
-						/>
-						<Route
-							path="/admin/Genre"
-							element={
-								<Admin>
-									<GenreTable />
-								</Admin>
-							}
-						/>
-						<Route
-							path="/admin/User"
-							element={
-								<Admin>
-									<UserTable />
-								</Admin>
-							}
-						/>
-						<Route
-							path="/admin/Game"
-							element={
-								<Admin>
-									<GameTable />
-								</Admin>
 							}
 						/>
 						<Route
@@ -92,10 +67,42 @@ function App() {
 							}
 						/>
 					</Routes>
+					{/* Admin Routes */}
+					<Routes>
+						<Route
+							path="/admin/Genre"
+							element={
+								<ProtectedRoute>
+									<GenreTable />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/User"
+							element={
+								<ProtectedRoute>
+									<UserTable />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/Game"
+							element={
+								<ProtectedRoute>
+									<GameTable />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/admin/"
+							element={
+								<ProtectedRoute>
+									<GameTable />
+								</ProtectedRoute>
+							}
+						/>
+					</Routes>
 				</body>
-				{/* <footer>
-					<Footer />
-				</footer> */}
 			</div>
 			<ToastContainer
 				position="top-right"
