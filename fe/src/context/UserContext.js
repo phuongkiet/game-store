@@ -1,25 +1,34 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
-const UserContext = createContext({id: null, email: '', role: '', auth: false});
+const UserContext = createContext({ user: null, admin: null });
 
-//@function UserProvider
-// Create function to provide UserContext
-const UserProvider = ({children}) => {
-    const [user, setUser] = useState({id: null, email: '', role: '', auth: false});
+const UserProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [admin, setAdmin] = useState(null);
 
-    const login = async (token) => {
+    const login = (token) => {
         localStorage.setItem('token', token);
         const decodedToken = jwtDecode(token);
         const userId = decodedToken.nameid;
         const userEmail = decodedToken.email;
-        const userRole = decodedToken.role; 
-        setUser({ id: userId, email: userEmail, role: userRole, auth: true });
+        const userRole = decodedToken.role;
+        const username = decodedToken.unique_name;
+
+        if (userRole === 'Admin') {
+            setAdmin({ id: userId, email: userEmail, username: username, role: userRole, auth: true });
+            setUser(null);
+        } else {
+            setUser({ id: userId, email: userEmail, username: username, role: userRole, auth: true });
+            console.log(user);
+            setAdmin(null);
+        }
     };
 
     const logout = () => {
         localStorage.removeItem("token");
-        setUser({id: null, email: '', role: '', auth: false});
+        setUser(null);
+        setAdmin(null);
     };
 
     useEffect(() => {
@@ -30,7 +39,15 @@ const UserProvider = ({children}) => {
                 const userId = decodedToken.nameid;
                 const userEmail = decodedToken.email;
                 const userRole = decodedToken.role;
-                setUser({ id: userId, email: userEmail, role: userRole, auth: true });
+                const username = decodedToken.unique_name;
+
+                if (userRole === 'Admin') {
+                    setAdmin({ id: userId, email: userEmail, username: username, role: userRole, auth: true });
+                    setUser(null);
+                } else {
+                    setUser({ id: userId, email: userEmail, username: username, role: userRole, auth: true });
+                    setAdmin(null);
+                }
             } catch (error) {
                 console.error('Error decoding token on initial load', error);
                 logout();
@@ -39,10 +56,11 @@ const UserProvider = ({children}) => {
     }, []);
 
     return (
-        <UserContext.Provider value={{user, login, logout}}>
+        <UserContext.Provider value={{ user, admin, login, logout }}>
             {children}
         </UserContext.Provider>
     );
 };
 
-export { UserContext, UserProvider};
+
+export { UserContext, UserProvider };

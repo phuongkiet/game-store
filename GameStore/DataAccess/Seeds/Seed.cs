@@ -44,7 +44,7 @@ namespace DataAccess.Seeds
             var admin = new User
             {
                 UserName = "admin@gmail.com",
-                Name = "admin",
+                Name = "Admin",
                 Email = "admin@gmail.com",
                 Status = 1,
                 EmailConfirmed = true,
@@ -56,7 +56,7 @@ namespace DataAccess.Seeds
             var manager = new User
             {
                 UserName = "manager@gmail.com",
-                Name = "manager",
+                Name = "Manager",
                 Email = "manager@gmail.com",
                 Status = 1,
                 EmailConfirmed = true,

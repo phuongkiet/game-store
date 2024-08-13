@@ -30,7 +30,7 @@ export default function Header() {
     ? notificationMessages
     : notificationMessages.slice(0, 5);
 
-  const { logout, user } = useContext(UserContext);
+  const { logout, user, admin } = useContext(UserContext);
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -83,11 +83,13 @@ export default function Header() {
           </a>
         </div>
         <div className="flex flex-1 justify-end">
-          {user && user.auth === true ? (
+          {(user && user.auth === true) || (admin && admin.auth === true) ? (
             <div className="lg:flex hidden">
               <Popover className="relative">
                 <PopoverButton className="flex items-center gap-x-1 text-sm font-semibold text-gray-900">
-                  <span>{`Hello ${user.email}`}</span>
+                  <span>
+                    {user ? `Hello ${user.email}` : `Hello ${admin?.email}`}
+                  </span>
                   <ChevronDownIcon
                     aria-hidden="true"
                     className="h-5 w-5 text-gray-400"
@@ -280,10 +282,11 @@ export default function Header() {
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
-              {user && user.auth === true ? (
+              {(user && user.auth === true) ||
+              (admin && admin.auth === true) ? (
                 <div className="py-6">
                   <span className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer">
-                    Hello {user.email}
+                    {user ? `Hello ${user.email}` : `Hello ${admin?.email}`}
                   </span>
                 </div>
               ) : (
@@ -310,7 +313,7 @@ export default function Header() {
                 </a>
               </div>
               <div className="py-6">
-                {user && user.auth === true ? (
+                {(user && user.auth === true) || (admin && admin.auth === true) ? (
                   <a
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 cursor-pointer"
                     onClick={handleLogout}

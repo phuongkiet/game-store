@@ -20,10 +20,10 @@ import GameList from "./component/GameList";
 import Checkout from "./component/form/Checkout";
 import ShoppingCart from "./component/ShoppingCart";
 import ProtectedRoute from "./component/auth/ProtectedRoute";
+import ChatComponent from "./component/chat/ChatComponent";
+import AdminChatRooms from "./component/chat/AdminChatRoom";
 function App() {
   const { user, login } = useContext(UserContext);
-
-  console.log(">> check user: ", user);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
@@ -33,7 +33,7 @@ function App() {
 	return (
 		<BrowserRouter>
 			<div className="">
-				<body className="mb-10">
+				<body className="">
 					{/* Client Routes */}
 					<Routes className="mx-auto">
 						<Route
@@ -103,6 +103,14 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
+						<Route
+							path="/admin/Chat"
+							element={
+								<ProtectedRoute>
+									<AdminChatRooms />
+								</ProtectedRoute>
+							}
+						/>
             <Route
               path="/ListGame"
               element={
@@ -142,6 +150,7 @@ function App() {
 				pauseOnHover
 				theme="colored"
 			/>
+			<ChatComponent/>
 		</BrowserRouter>
 	);
 }

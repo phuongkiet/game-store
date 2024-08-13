@@ -6,28 +6,29 @@ import Footer from "../Footer";
 import Admin from "../Admin";
 
 const ProtectedRoute = (props) => {
-	const { user } = useContext(UserContext);
-	console.log(">>> check user role: ", user);
+  const { admin } = useContext(UserContext);
 
-	return (
-		<>
-			{user && user.role !== "Admin" ? (
-				<>
-					<header>
-						<Header />
-					</header>
-					<body>
-						<Unathorize />
-					</body>
-					<footer>
-						<Footer />
-					</footer>
-				</>
-			) : (
-				<Admin>{props.children}</Admin>
-			)}
-		</>
-	);
+  return (
+    <>
+      {admin ? (
+        <>
+          <Admin>{props.children}</Admin>
+        </>
+      ) : (
+        <>
+          <header>
+            <Header />
+          </header>
+          <body>
+            <Unathorize />
+          </body>
+          <footer>
+            <Footer />
+          </footer>
+        </>
+      )}
+    </>
+  );
 };
 
 export default ProtectedRoute;
