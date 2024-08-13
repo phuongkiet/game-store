@@ -35,7 +35,7 @@ namespace DataAccess.DAO
         {
             var user = new User
             {
-                UserName = registerBody.Email,
+                UserName = registerBody.Name,
                 Email = registerBody.Email,
                 Name = registerBody.Name,
                 PhoneNumber = registerBody.PhoneNumber,
@@ -81,7 +81,7 @@ namespace DataAccess.DAO
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Name),
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString())
             };
 

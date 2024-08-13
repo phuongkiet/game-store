@@ -13,6 +13,7 @@ using Presentation.Services;
 using Presentation.Services.Interfaces;
 using Repository;
 using Repository.IRepository;
+using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -119,7 +120,15 @@ builder.Services.AddScoped<GameDAO>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 //SignalR
-builder.Services.AddSignalR();
+builder.Services.AddSignalR(c =>
+{
+    c.EnableDetailedErrors = true;
+    c.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+    c.KeepAliveInterval = TimeSpan.FromSeconds(15);
+});
+
+builder.Services.AddSingleton(new ConcurrentDictionary<string, UserConnection>());
+builder.Services.AddSingleton<ChatHub>();
 
 var app = builder.Build();
 
@@ -131,12 +140,17 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting();
 app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseMiddleware<CustomAuthorizationMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
-app.MapHub<NotificationHub>("/NotificationHub");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<NotificationHub>("/NotificationHub");
+    endpoints.MapHub<ChatHub>("/ChatHub");
+});
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
 try

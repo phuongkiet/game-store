@@ -13,13 +13,10 @@ export const useNotifications = () => {
       .build();
   
     connection.start()
-      .then(() => {
-        console.log("Connected to SignalR hub");
-  
+      .then(() => {  
         connection.on("ReceiveNotification", (message) => {
           setNotificationCount((prevCount) => prevCount + 1);
           setNotificationMessages((prevMessages) => [message, ...prevMessages]);
-          console.log(message);
         });
       })
       .catch((error) => console.error("SignalR Connection Error:", error));
