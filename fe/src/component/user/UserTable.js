@@ -5,8 +5,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
 import ModalAddUser from "./ModalAddUser";
 import { UserContext } from "../../context/UserContext";
-import Unathorize from "../auth/Unathorize";
-// import ModalUpdateUser from './ModalUpdateUser';
+import ModalUpdateUser from "./ModalUpdateUser";
 // import ModalDeleteUser from './ModalDeleteUser';
 
 export default function UserTable() {
@@ -173,8 +172,13 @@ export default function UserTable() {
 				onSubmit={handleSubmit}
 				onCreateSuccess={() => getUsers(1)}
 			/>
-			{/* <ModalUpdateUser isOpen={isModalEditOpen} onClose={handleCloseModal} dataUserEdit={dataUser} onEditSuccess={() => getUsers(currentPage)}/>
-            <ModalDeleteUser isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataUser={dataUser} onDeleteSuccess={() => getUsers(currentPage)}/> */}
+			<ModalUpdateUser
+				isOpen={isModalEditOpen}
+				onClose={handleCloseModal}
+				dataUserEdit={dataUser}
+				onEditSuccess={() => getUsers(currentPage, searchTerm)}
+			/>
+			{/* <ModalDeleteUser isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataUser={dataUser} onDeleteSuccess={() => getUsers(currentPage)}/> */}
 		</>
 	);
 }
