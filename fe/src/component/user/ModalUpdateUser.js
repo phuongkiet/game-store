@@ -2,29 +2,31 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { updateUser } from "../../services/UserService";
 
-export default function ModalUpdateUser(isOpen, onClose, onSubmit, dataUserEdit, onEditSuccess) {
+export default function ModalUpdateUser({ isOpen, onClose, onSubmit, dataUserEdit, onEditSuccess }) {
 	const [UserId, setUserId] = useState(0);
 	const [Name, setName] = useState("");
 	const [Birthday, setBirthday] = useState("");
 	const [Email, setEmail] = useState("");
 	const [PhoneNumber, setPhoneNumber] = useState("");
 	const [Money, setMoney] = useState(0);
+	const [Status, setStatus] = useState(1);
 
 	useEffect(() => {
 		if (isOpen && dataUserEdit) {
-			setUserId(dataUserEdit.GenreId);
-			setName(dataUserEdit.GenreName);
-			setBirthday(dataUserEdit.GenreName);
-			setEmail(dataUserEdit.GenreName);
-			setPhoneNumber(dataUserEdit.GenreName);
-			setMoney(dataUserEdit.GenreName);
+			setUserId(dataUserEdit.UserId);
+			setName(dataUserEdit.Name);
+			setBirthday(dataUserEdit.Birthday);
+			setEmail(dataUserEdit.Email);
+			setPhoneNumber(dataUserEdit.PhoneNumber);
+			setMoney(dataUserEdit.Money);
+			setStatus(dataUserEdit.Status);
 		}
 	}, [isOpen, dataUserEdit]);
 
 	const handleSaveUser = async (event) => {
 		event.preventDefault();
 		try {
-			let res = await updateUser(UserId, Name, Birthday, Money, Email, PhoneNumber);
+			let res = await updateUser(UserId, Name, Birthday, Email, PhoneNumber, Status);
 			if (res && res.Success === true) {
 				onClose();
 				setUserId(0);
@@ -32,6 +34,7 @@ export default function ModalUpdateUser(isOpen, onClose, onSubmit, dataUserEdit,
 				setBirthday("");
 				setEmail("");
 				setPhoneNumber("");
+				setStatus(1);
 				setMoney(0);
 				toast.success("User updated successfully!");
 				onEditSuccess();
@@ -136,16 +139,32 @@ export default function ModalUpdateUser(isOpen, onClose, onSubmit, dataUserEdit,
 												</div>
 											</div>
 										</div>
+										<div>
+											<label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
+												Status
+											</label>
+											<div className="mt-2">
+												<select
+													id="status"
+													name="status"
+													value={Status}
+													onChange={(event) => setStatus(parseInt(event.target.value))}
+													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
+												>
+													<option value="1">Active</option>
+													<option value="0">Inactive</option>
+												</select>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
 							<div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
 								<button
 									type="submit"
-									onClick={handleSaveUser}
 									className="flex w-full justify-center rounded-md bg-sky-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 sm:ml-3 sm:w-auto"
 								>
-									Update
+									Save
 								</button>
 								<button
 									type="button"
