@@ -13,9 +13,10 @@ export default function ModalUpdateUser({ isOpen, onClose, onSubmit, dataUserEdi
 
 	useEffect(() => {
 		if (isOpen && dataUserEdit) {
-			setUserId(dataUserEdit.UserId);
+			setUserId(dataUserEdit.Id);
 			setName(dataUserEdit.Name);
-			setBirthday(dataUserEdit.Birthday);
+			const formattedBirthday = new Date(dataUserEdit.Birthday).toISOString().split('T')[0];
+			setBirthday(formattedBirthday);
 			setEmail(dataUserEdit.Email);
 			setPhoneNumber(dataUserEdit.PhoneNumber);
 			setMoney(dataUserEdit.Money);
@@ -26,7 +27,7 @@ export default function ModalUpdateUser({ isOpen, onClose, onSubmit, dataUserEdi
 	const handleSaveUser = async (event) => {
 		event.preventDefault();
 		try {
-			let res = await updateUser(UserId, Name, Birthday, Email, PhoneNumber, Status);
+			let res = await updateUser(UserId, Name, Birthday, Money, Email, PhoneNumber, Status);
 			if (res && res.Success === true) {
 				onClose();
 				setUserId(0);

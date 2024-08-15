@@ -18,7 +18,7 @@ export default function UserTable() {
 	const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
 	const [dataUser, setDataUser] = useState({});
 	const [searchTerm, setSearchTerm] = useState("");
-	const { user } = useContext(UserContext);
+	// const { user } = useContext(UserContext);
 
 	useEffect(() => {
 		getUsers(currentPage, searchTerm);
