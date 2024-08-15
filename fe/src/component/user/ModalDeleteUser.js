@@ -2,27 +2,27 @@ import { useEffect, useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
 import { BsExclamationTriangle } from "react-icons/bs";
 import { toast } from "react-toastify";
-import { deleteGame } from "../../services/GameService";
+import { deleteUser } from "../../services/UserService";
 
-export default function ModalDeleteGame({ isOpen, onClose, dataGame, onDeleteSuccess }) {
-	const [Id, setId] = useState(0);
+export default function ModalDeleteGame({ isOpen, onClose, dataUser, onDeleteSuccess }) {
+	const [UserId, setUserId] = useState(0);
 
 	useEffect(() => {
-		if (isOpen && dataGame) {
-			setId(dataGame.GameId);
+		if (isOpen && dataUser) {
+			setUserId(dataUser.Id);
 		}
-	}, [isOpen, dataGame]);
+	}, [isOpen, dataUser]);
 
-	const handleDeleteGame = async (event) => {
+	const handleDeleteUser = async (event) => {
 		try {
-			let res = await deleteGame(Id);
+			let res = await deleteUser(UserId);
 			if (res.Success === true) {
-				toast.success(res.Message || "Game deleted successfully!");
+				toast.success(res.Message || "User deleted successfully!");
 				onClose();
-				setId(0);
+				setUserId(0);
 				onDeleteSuccess();
 			} else {
-				toast.error(res.Message || "Error when deleting game!");
+				toast.error(res.Message || "Error when deleting User!");
 				onClose();
 			}
 		} catch (error) {
@@ -48,10 +48,10 @@ export default function ModalDeleteGame({ isOpen, onClose, dataGame, onDeleteSuc
 								</div>
 								<div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
 									<DialogTitle as="h3" className="text-base font-semibold leading-6 text-gray-900">
-										Delete game
+										Delete User
 									</DialogTitle>
 									<div className="mt-2">
-										<p className="text-sm text-gray-500">Are you sure you want to delete this game {`${Id}`}?</p>
+										<p className="text-sm text-gray-500">Are you sure you want to delete this User {`${UserId}`}?</p>
 									</div>
 								</div>
 							</div>
@@ -59,7 +59,7 @@ export default function ModalDeleteGame({ isOpen, onClose, dataGame, onDeleteSuc
 						<div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
 							<button
 								type="button"
-								onClick={handleDeleteGame}
+								onClick={handleDeleteUser}
 								className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
 							>
 								Delete
