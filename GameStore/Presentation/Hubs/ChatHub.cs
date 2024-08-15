@@ -40,16 +40,24 @@ namespace Presentation.Hubs
         }
         public async Task JoinRoomAsAdmin(string roomName)
         {
-            if (_userConnections.TryGetValue(Context.ConnectionId, out var existingConnection))
+            var adminConnections = _userConnections.Where(x => x.Value.Name == "Admin").ToList();
+
+            foreach (var connection in adminConnections)
             {
-                if (existingConnection.RoomName == roomName)
+                /*if (connection.Value.RoomName == roomName)
                 {
                     Console.WriteLine("Admin is already in the room.");
                     return;
-                }
+                }*/
+
+                // Remove the existing admin connection from the group if in another room
+                await Groups.RemoveFromGroupAsync(connection.Value.ConnectionId, connection.Value.RoomName);
+
+                // Corrected the Remove method call with the 'out' parameter
+                _userConnections.Remove(connection.Key, out _);
             }
 
-            // Proceed with joining the room
+            // Add the new admin connection
             _userConnections[Context.ConnectionId] = new UserConnection
             {
                 Name = "Admin",
@@ -66,7 +74,6 @@ namespace Presentation.Hubs
                 isIncoming = true
             });
         }
-
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
