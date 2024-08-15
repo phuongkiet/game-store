@@ -6,7 +6,6 @@ import ReactPaginate from "react-paginate";
 import ModalAddGame from "./ModalAddGame";
 import ModalDeleteGame from "./ModalDeleteGame";
 import ModalUpdateGame from "./ModalUpdateGame";
-import Unathorize from "../auth/Unathorize";
 import { UserContext } from "../../context/UserContext";
 
 export default function GameTable() {

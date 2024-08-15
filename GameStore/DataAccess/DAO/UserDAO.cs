@@ -49,7 +49,7 @@ namespace DataAccess.DAO
 
                 if (!string.IsNullOrEmpty(SreachTerm))
                 {
-                    query = query.Where(p => p.UserName.ToLower().Contains(SreachTerm));
+                    query = query.Where(p => p.Name.ToLower().Contains(SreachTerm));
                 }
 
                 var result = await PagedList<User>.ToPagedList(query.OrderBy(q => q.Id), page, pageSize);
@@ -134,7 +134,8 @@ namespace DataAccess.DAO
                     exist.Email = user.Email;
                     exist.PhoneNumber = user.PhoneNumber;
                     exist.Birthday = user.Birthday;
-                    exist.UserName = user.UserName;    
+                    exist.UserName = user.UserName;  
+                    exist.Status = user.Status;
                     context.Users.Update(exist);
                     context.SaveChanges();
                     await context.SaveChangesAsync();

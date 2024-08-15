@@ -8,13 +8,12 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 	const [Birthday, setBirthday] = useState("");
 	const [Email, setEmail] = useState("");
 	const [PhoneNumber, setPhoneNumber] = useState("");
-	const [Money, setMoney] = useState(0);
 
 	if (!isOpen) return null;
 
 	const handleSaveUser = async () => {
 		try {
-			let res = await createUser(UserId, Name, Birthday, Money, Email, PhoneNumber);
+			let res = await createUser(UserId, Name, Birthday, Email, PhoneNumber);
 			if (res && res.Success === true) {
 				onClose();
 				setUserId(0);
@@ -22,7 +21,6 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 				setBirthday("");
 				setEmail("");
 				setPhoneNumber("");
-				setMoney(0);
 				toast.success("User created successfully!");
 				onCreateSuccess();
 			} else if (res && res.Success === false) {
