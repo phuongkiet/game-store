@@ -122,7 +122,8 @@ namespace Presentation.Controllers
                     Name = updateUser.Name,
                     Email = updateUser.Email,
                     Birthday = updateUser.Birthday,
-                    PhoneNumber = updateUser.PhoneNumber
+                    PhoneNumber = updateUser.PhoneNumber,
+                    Status = updateUser.Status
                 };
 
                 await _userRepository.Update(g);

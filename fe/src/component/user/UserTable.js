@@ -5,9 +5,8 @@ import { FaTrashAlt } from "react-icons/fa";
 import { GoPencil } from "react-icons/go";
 import ModalAddUser from "./ModalAddUser";
 import { UserContext } from "../../context/UserContext";
-import Unathorize from "../auth/Unathorize";
-// import ModalUpdateUser from './ModalUpdateUser';
-// import ModalDeleteUser from './ModalDeleteUser';
+import ModalUpdateUser from "./ModalUpdateUser";
+import ModalDeleteUser from "./ModalDeleteUser";
 
 export default function UserTable() {
 	const [listUsers, setListUsers] = useState([]);
@@ -19,10 +18,10 @@ export default function UserTable() {
 	const [isModalDeleteOpen, setIsModalDeleteOpen] = useState(false);
 	const [dataUser, setDataUser] = useState({});
 	const [searchTerm, setSearchTerm] = useState("");
-	const { user } = useContext(UserContext);
+	// const { user } = useContext(UserContext);
 
 	useEffect(() => {
-		getUsers(currentPage);
+		getUsers(currentPage, searchTerm);
 	}, [currentPage]);
 
 	const getUsers = async (page, searchTerm) => {
@@ -63,13 +62,13 @@ export default function UserTable() {
 		setIsModalOpen(false);
 	};
 
-	const handleEditUser = (User) => {
-		setDataUser(User);
+	const handleEditUser = (user) => {
+		setDataUser(user);
 		setIsModalEditOpen(true);
 	};
 
-	const handleDeleteUser = (User) => {
-		setDataUser(User);
+	const handleDeleteUser = (user) => {
+		setDataUser(user);
 		setIsModalDeleteOpen(true);
 	};
 
@@ -111,6 +110,7 @@ export default function UserTable() {
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Id</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Name</th>
 								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Email</th>
+								<th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
 								<th className="px-6 py-3 text-right text-sm font-semibold text-gray-600">Action</th>
 							</tr>
 						</thead>
@@ -121,6 +121,7 @@ export default function UserTable() {
 										<td className="px-6 py-4 text-sm text-gray-900">{item.Id}</td>
 										<td className="px-6 py-4 text-sm text-gray-500">{item.Name}</td>
 										<td className="px-6 py-4 text-sm text-gray-500">{item.Email}</td>
+										<td className="px-6 py-4 text-sm text-gray-500">{item.Status === 1 ? "Active" : "Inactive"}</td>
 										<td className="px-6 py-4 text-right text-sm font-medium">
 											<div className="flex float-right">
 												<GoPencil
@@ -171,10 +172,20 @@ export default function UserTable() {
 				isOpen={isModalOpen}
 				onClose={handleCloseModal}
 				onSubmit={handleSubmit}
-				onCreateSuccess={() => getUsers(1)}
+				onCreateSuccess={() => getUsers(1, searchTerm)}
 			/>
-			{/* <ModalUpdateUser isOpen={isModalEditOpen} onClose={handleCloseModal} dataUserEdit={dataUser} onEditSuccess={() => getUsers(currentPage)}/>
-            <ModalDeleteUser isOpen={isModalDeleteOpen} onClose={handleCloseModal} dataUser={dataUser} onDeleteSuccess={() => getUsers(currentPage)}/> */}
+			<ModalUpdateUser
+				isOpen={isModalEditOpen}
+				onClose={handleCloseModal}
+				dataUserEdit={dataUser}
+				onEditSuccess={() => getUsers(currentPage, searchTerm)}
+			/>
+			<ModalDeleteUser
+				isOpen={isModalDeleteOpen}
+				onClose={handleCloseModal}
+				dataUser={dataUser}
+				onDeleteSuccess={() => getUsers(currentPage, searchTerm)}
+			/>
 		</>
 	);
 }

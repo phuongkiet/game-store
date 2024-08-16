@@ -1,19 +1,33 @@
-import React, { useState } from "react";
-import { createUser } from "../../services/UserService";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { updateUser } from "../../services/UserService";
 
-export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSuccess }) {
+export default function ModalUpdateUser({ isOpen, onClose, onSubmit, dataUserEdit, onEditSuccess }) {
 	const [UserId, setUserId] = useState(0);
 	const [Name, setName] = useState("");
 	const [Birthday, setBirthday] = useState("");
 	const [Email, setEmail] = useState("");
 	const [PhoneNumber, setPhoneNumber] = useState("");
+	const [Money, setMoney] = useState(0);
+	const [Status, setStatus] = useState(1);
 
-	if (!isOpen) return null;
+	useEffect(() => {
+		if (isOpen && dataUserEdit) {
+			setUserId(dataUserEdit.Id);
+			setName(dataUserEdit.Name);
+			const formattedBirthday = new Date(dataUserEdit.Birthday).toISOString().split('T')[0];
+			setBirthday(formattedBirthday);
+			setEmail(dataUserEdit.Email);
+			setPhoneNumber(dataUserEdit.PhoneNumber);
+			setMoney(dataUserEdit.Money);
+			setStatus(dataUserEdit.Status);
+		}
+	}, [isOpen, dataUserEdit]);
 
-	const handleSaveUser = async () => {
+	const handleSaveUser = async (event) => {
+		event.preventDefault();
 		try {
-			let res = await createUser(UserId, Name, Birthday, Email, PhoneNumber);
+			let res = await updateUser(UserId, Name, Birthday, Money, Email, PhoneNumber, Status);
 			if (res && res.Success === true) {
 				onClose();
 				setUserId(0);
@@ -21,10 +35,12 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 				setBirthday("");
 				setEmail("");
 				setPhoneNumber("");
-				toast.success("User created successfully!");
-				onCreateSuccess();
+				setStatus(1);
+				setMoney(0);
+				toast.success("User updated successfully!");
+				onEditSuccess();
 			} else if (res && res.Success === false) {
-				toast.error("Error when creating user!");
+				toast.error("Error when updating user!");
 				onClose();
 			}
 		} catch (error) {
@@ -33,18 +49,20 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 		}
 	};
 
+	if (!isOpen) return null;
+
 	return (
 		<div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 			<div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 			<div className="fixed inset-0 z-10 w-screen overflow-y-auto">
 				<div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
 					<div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-						<form onSubmit={onSubmit} className="space-y-6">
+						<form onSubmit={handleSaveUser} className="space-y-6">
 							<div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
 								<div className="sm:flex sm:items-start">
 									<div className="mt-3 text-center w-full sm:text-left">
 										<h3 className="text-lg font-medium leading-6 text-gray-900" id="modal-title">
-											Add New User
+											Edit User
 										</h3>
 										<div className="mt-2">
 											<div>
@@ -122,16 +140,32 @@ export default function ModalAddUser({ isOpen, onClose, onSubmit, onCreateSucces
 												</div>
 											</div>
 										</div>
+										<div>
+											<label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
+												Status
+											</label>
+											<div className="mt-2">
+												<select
+													id="status"
+													name="status"
+													value={Status}
+													onChange={(event) => setStatus(parseInt(event.target.value))}
+													className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-sky-400 sm:text-sm sm:leading-6 pl-3"
+												>
+													<option value="1">Active</option>
+													<option value="0">Inactive</option>
+												</select>
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
 							<div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
 								<button
 									type="submit"
-									onClick={handleSaveUser}
 									className="flex w-full justify-center rounded-md bg-sky-400 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 sm:ml-3 sm:w-auto"
 								>
-									Create
+									Save
 								</button>
 								<button
 									type="button"

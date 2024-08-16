@@ -174,7 +174,7 @@ namespace Presentation.Controllers
                 //check if gmae is in use
                 if (await _gameRepository.IsGameInUse(id))
                 {
-                    return StatusCode(400, new ApiResponse { Success = false, Message = "Game is in use with other tables, cannot delete." });
+                    return Ok(new ApiResponse { Success = false, Message = "Game is in use with other tables, cannot delete." });
                 }
                 else
                 {
