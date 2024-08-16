@@ -25,7 +25,7 @@ namespace DataAccess.DAO
             }
             return list;
         }
-        public async Task<PagedList<Game>> ListGameWithPaging(int page, int pageSize, string SreachTerm)
+        public async Task<PagedList<Game>> ListGameWithPaging(int page, int pageSize, string SearchTerm)
         {
             IQueryable<Game> query = null;
             try
@@ -33,9 +33,9 @@ namespace DataAccess.DAO
                 var context = new GameStoreDbContext();
                 query = context.Games.Include(c => c.GameImage).Where(p => p.Status == 1).AsQueryable();
 
-                if (!string.IsNullOrEmpty(SreachTerm))
+                if (!string.IsNullOrEmpty(SearchTerm))
                 {
-                    query = query.Where(p => p.Title.ToLower().Contains(SreachTerm) && p.Status == 1);
+                    query = query.Where(p => p.Title.ToLower().Contains(SearchTerm) && p.Status == 1);
                 }
 
                 var result = await PagedList<Game>.ToPagedList(query.OrderBy(q => q.GameId), page, pageSize);
@@ -92,7 +92,7 @@ namespace DataAccess.DAO
                 if (exist != null)
                 {
                     throw new Exception("Game " + $"{game.Title} already exist");
-                    
+            
                 }
                 else
                 {

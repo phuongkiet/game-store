@@ -118,6 +118,9 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 //Game
 builder.Services.AddScoped<GameDAO>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
+//GameCode
+builder.Services.AddScoped<GameCodeDAO>();
+builder.Services.AddScoped<IGameCodeRepository, GameCodeRepository>();
 
 //SignalR
 builder.Services.AddSignalR(c =>
